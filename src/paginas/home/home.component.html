@@ -1,1 +1,34 @@
-<p>home works!</p>
+<div class="home">
+    <div class="banners" *ngIf="empresa?.banners?.[slideIndex] as banner">
+        <div class="banner-contenedor">
+            <img [src]="banner.url" alt="Banner" class="banner-img">
+            <div class="banner-texto">
+                {{ banner.descripcion }}
+            </div>
+        </div>
+    </div>
+    <div class="cards">
+        <div class="card">
+            <div class="card-inner">
+                <div class="card-front">
+                    <p>Misión</p>
+                </div>
+                <div class="card-back">
+                    <p>{{empresa.mision}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-inner">
+                <div class="card-front">
+                    <p>Visión</p>
+                </div>
+                <div class="card-back">
+                    <p>{{empresa.vision}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

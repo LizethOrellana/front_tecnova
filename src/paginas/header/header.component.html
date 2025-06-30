@@ -1,6 +1,15 @@
 <header class="menu-header">
     <nav>
+
         <ul class="menu-list">
+            <li class="empresa-header">
+                <a routerLink="/" class="empresa-link">
+                    <img [src]="empresa.logo" alt="Logo" width="30">
+                    <span>{{ empresa.nombre }}</span>
+                </a>
+            </li>
+
+
             <li *ngFor="let item of menus">
                 <a [routerLink]="item.ruta">
                     <i *ngIf="item.icono" class="{{ item.icono }}"></i>

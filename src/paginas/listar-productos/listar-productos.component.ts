@@ -4,6 +4,7 @@ import { Producto } from '../../models/Producto';
 import { ProductoServiceService } from '../../services/producto.service';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listar-productos',
@@ -12,37 +13,33 @@ import { PLATFORM_ID, Inject } from '@angular/core';
   templateUrl: './listar-productos.component.html',
   styleUrl: './listar-productos.component.css'
 })
-export class ListarProductosComponent implements OnInit{
+export class ListarProductosComponent implements OnInit {
   productos: Producto[] = [];
 
-  constructor(private productoService: ProductoServiceService,
-    @Inject(PLATFORM_ID) private platformId: Object) {}
-    ngOnInit(): void {
-      if (isPlatformBrowser(this.platformId)) {
-        this.productoService.obtenerTodos().subscribe({
-          next: (data) => this.productos = data,
-          error: (err) => {
-            console.error('Error al obtener productos:', err);
-            this.productos = [];
-          }
-        });
-      }
+  constructor(private router: Router, private productoService: ProductoServiceService,
+    @Inject(PLATFORM_ID) private platformId: Object) { }
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.productoService.obtenerTodos().subscribe({
+        next: (data) => this.productos = data,
+        error: (err) => {
+          console.error('Error al obtener productos:', err);
+          this.productos = [];
+        }
+      });
     }
-  
-  cargarProductos(): void {
-    
   }
 
-  
+  cargarProductos(): void {
+
+  }
+
+
 
   verDetalle(producto: Producto): void {
     console.log('Vista previa:', producto);
   }
 
-  
-  
-
-  
 
   editarProducto(producto: any): void {
     console.log('Editar producto:', producto);
@@ -56,6 +53,8 @@ export class ListarProductosComponent implements OnInit{
   }
 
 
-
+  crearProducto() {
+    this.router.navigate(['/crearProducto']);
+  }
 
 }

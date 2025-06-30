@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { Producto } from '../../models/Producto';
 import { ProductoServiceService } from '../../services/producto.service';
+import { CategoriaService } from '../../services/categoria.service';
+import { Categoria } from '../../models/Categoria';
+import { MarcaService } from '../../services/marca.service';
+import { Marca } from '../../models/Marca';
 
 @Component({
   selector: 'app-crear-producto',
@@ -13,12 +17,16 @@ import { ProductoServiceService } from '../../services/producto.service';
   styleUrls: ['./crear-producto.component.css']
 })
 export class CrearProductoComponent implements OnInit {
+  categorias: Categoria[] = [];
+  marcas: Marca[] = [];
 
-  
 
-  constructor(private productoService: ProductoServiceService, private router: Router) {}
+  constructor(private marcaService: MarcaService, private categoriaService: CategoriaService, @Inject(PLATFORM_ID) private platformId: Object, private productoService: ProductoServiceService, private router: Router) { }
   ngOnInit(): void {
-    
+    if (isPlatformBrowser(this.platformId)) {
+      this.obtenerCategorias();
+      this.obtenerMarcas();
+    }
   }
 
   producto: Producto = {
@@ -46,11 +54,31 @@ export class CrearProductoComponent implements OnInit {
 
   selectedFile: File | null = null;
 
-onFileSelected(event: any): void {
-  let file = event.target.files[0];
-  if (file) {
-    this.selectedFile = file;
-    file = this.producto.imagen_url
+  onFileSelected(event: any): void {
+    let file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      file = this.producto.imagen_url
+    }
   }
-}
+
+  obtenerCategorias() {
+    this.categoriaService.obtenerTodas().subscribe({
+      next: (data) => this.categorias = data,
+      error: (err) => {
+        console.error('Error al obtener categorias:', err);
+        this.categorias = [];
+      }
+    });
+  }
+
+  obtenerMarcas() {
+    this.marcaService.obtenerTodas().subscribe({
+      next: (data) => this.marcas = data,
+      error: (err) => {
+        console.error('Error al obtener marcas:', err);
+        this.marcas = [];
+      }
+    });
+  }
 }
