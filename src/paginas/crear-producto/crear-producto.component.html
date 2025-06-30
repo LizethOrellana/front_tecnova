@@ -1,0 +1,51 @@
+<div class="form-container">
+    <h2>🛒 Nuevo Producto</h2>
+  
+    <form (ngSubmit)="guardarProducto()" #formProducto="ngForm">
+      <div class="form-grid">
+        <!-- Primera columna -->
+        <div class="form-column">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="nombre" [(ngModel)]="producto.nombre" required />
+          </div>
+  
+          <div class="form-group">
+            <label>Precio</label>
+            <input type="number" name="precio" [(ngModel)]="producto.precio" required />
+          </div>
+  
+          <div class="form-group">
+            <label>Stock</label>
+            <input type="number" name="stock" [(ngModel)]="producto.stock" required />
+          </div>
+  
+          <div class="form-group">
+            <label>Seleccionar imagen</label>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+          </div>
+        </div>
+  
+        <!-- Segunda columna -->
+        <div class="form-column">
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea name="descripcion" [(ngModel)]="producto.descripcion" rows="5" required></textarea>
+          </div>
+  
+          <div class="form-group">
+            <label>Categoría ID</label>
+            <input type="number" name="categoria_id" [(ngModel)]="producto.categoria_id" required />
+          </div>
+  
+          <div class="form-group">
+            <label>Marca ID</label>
+            <input type="number" name="marca_id" [(ngModel)]="producto.marca_id" required />
+          </div>
+        </div>
+      </div>
+  
+      <button type="submit" class="btn-submit">Guardar Producto</button>
+    </form>
+  </div>
+  

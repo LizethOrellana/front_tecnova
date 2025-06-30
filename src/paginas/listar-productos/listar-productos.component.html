@@ -1,1 +1,19 @@
-<p>listar-productos works!</p>
+<div class="hero-header">
+    <h1>🎉 ¡Explora nuestros productos favoritos!</h1>
+    <p>Calidad, precio y tecnología al alcance de un clic</p>
+  </div>
+  
+  <div class="grid-container">
+    <div class="product-card" *ngFor="let producto of productos">
+      <div class="product-image">
+        <img src="{{ producto.imagen_url }}" alt="Producto">
+      </div>
+      <div class="product-info">
+        <h3>{{ producto.nombre }}</h3>
+        <p class="descripcion">{{ producto.descripcion }}</p>
+        <p class="precio">{{ producto.precio | currency:'USD' }}</p>
+
+      </div>
+    </div>
+  </div>
+  
