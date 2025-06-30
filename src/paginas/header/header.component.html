@@ -1,0 +1,14 @@
+<header class="menu-header">
+    <nav>
+        <ul class="menu-list">
+            <li *ngFor="let item of menus">
+                <a [routerLink]="item.ruta">
+                    <i *ngIf="item.icono" class="{{ item.icono }}"></i>
+                    {{ item.nombre }}
+                </a>
+            </li>
+            <li><button *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Cerrar sesión</button>
+            </li>
+        </ul>
+    </nav>
+</header>
