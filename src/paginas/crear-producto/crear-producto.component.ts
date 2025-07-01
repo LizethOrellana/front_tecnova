@@ -35,9 +35,9 @@ export class CrearProductoComponent implements OnInit {
     descripcion: '',
     precio: 0,
     stock: 0,
-    imagen_url: '',
-    categoria_id: 1,
-    marca_id: 1,
+    imagenUrl: '',
+    categoriaId: 1,
+    marcaId: 1,
     fecha_creacion: ''
   };
 
@@ -55,12 +55,20 @@ export class CrearProductoComponent implements OnInit {
   selectedFile: File | null = null;
 
   onFileSelected(event: any): void {
-    let file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      file = this.producto.imagen_url
-    }
+  const file = event.target.files[0];
+  if (file) {
+    this.selectedFile = file;
+
+    // Opcional: crea una vista previa local
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.producto.imagenUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+
+    console.log('Archivo seleccionado:', this.selectedFile);
   }
+}
 
   obtenerCategorias() {
     this.categoriaService.obtenerTodas().subscribe({

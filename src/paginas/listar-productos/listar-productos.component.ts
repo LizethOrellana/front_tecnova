@@ -29,11 +29,28 @@ export class ListarProductosComponent implements OnInit {
       });
     }
   }
+mostrarCarrito: boolean = false;
+carrito: any[] = [];
+total: number = 0;
 
-  cargarProductos(): void {
+anadirAlCarrito(producto: any) {
+  this.carrito.push(producto);
+  this.actualizarTotal();
+}
 
-  }
+eliminarDelCarrito(index: number) {
+  this.carrito.splice(index, 1);
+  this.actualizarTotal();
+}
 
+actualizarTotal() {
+  this.total = this.carrito.reduce((suma, item) => suma + item.precio, 0);
+}
+
+irAPagar() {
+  console.log('Redirigir a checkout con:', this.carrito);
+  // Aquí podrías redirigir a otra página o mostrar un modal de confirmación
+}
 
 
   verDetalle(producto: Producto): void {

@@ -5,7 +5,7 @@ export interface Producto {
     fecha_creacion:string;
     precio: number;
     stock: number;
-    imagen_url?: string;
-    categoria_id?: number;
-    marca_id?: number;
+    imagenUrl?: string;
+    categoriaId?: number;
+    marcaId?: number;
 }
