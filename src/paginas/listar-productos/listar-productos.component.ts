@@ -5,73 +5,49 @@ import { ProductoServiceService } from '../../services/producto.service';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-listar-productos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './listar-productos.component.html',
   styleUrl: './listar-productos.component.css'
 })
-export class ListarProductosComponent implements OnInit {
+export class ListarProductosComponent {
   productos: Producto[] = [];
+  productoEditando: Producto | null = null;
 
-  constructor(private router: Router, private productoService: ProductoServiceService,
-    @Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(private productoService: ProductoServiceService) { }
+
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.productoService.obtenerTodos().subscribe({
-        next: (data) => this.productos = data,
-        error: (err) => {
-          console.error('Error al obtener productos:', err);
-          this.productos = [];
-        }
+    this.cargarProductos();
+  }
+
+  cargarProductos(): void {
+    this.productoService.obtenerTodos().subscribe(data => this.productos = data);
+  }
+
+  editarProducto(producto: Producto): void {
+    this.productoEditando = { ...producto }; // Clonamos para no modificar directamente
+  }
+
+  guardarEdicion(): void {
+    if (this.productoEditando && this.productoEditando.id) {
+      this.productoService.actualizar(this.productoEditando.id, this.productoEditando).subscribe(() => {
+        this.productoEditando = null;
+        this.cargarProductos();
       });
     }
   }
-mostrarCarrito: boolean = false;
-carrito: any[] = [];
-total: number = 0;
 
-anadirAlCarrito(producto: any) {
-  this.carrito.push(producto);
-  this.actualizarTotal();
-}
-
-eliminarDelCarrito(index: number) {
-  this.carrito.splice(index, 1);
-  this.actualizarTotal();
-}
-
-actualizarTotal() {
-  this.total = this.carrito.reduce((suma, item) => suma + item.precio, 0);
-}
-
-irAPagar() {
-  console.log('Redirigir a checkout con:', this.carrito);
-  // Aquí podrías redirigir a otra página o mostrar un modal de confirmación
-}
-
-
-  verDetalle(producto: Producto): void {
-    console.log('Vista previa:', producto);
+  cancelarEdicion(): void {
+    this.productoEditando = null;
   }
 
-
-  editarProducto(producto: any): void {
-    console.log('Editar producto:', producto);
-    // Aquí podrías redirigir a un formulario de edición
+  eliminarProducto(id: number): void {
+    if (confirm('¿Estás seguro de eliminar este producto?')) {
+      this.productoService.eliminar(id).subscribe(() => this.cargarProductos());
+    }
   }
-
-  eliminarProducto(nombre: string): void {
-    console.log('Eliminar producto con nombre:', nombre);
-    // Aquí podrías hacer una llamada al backend para eliminarlo
-    this.productos = this.productos.filter(p => p.nombre !== nombre);
-  }
-
-
-  crearProducto() {
-    this.router.navigate(['/crearProducto']);
-  }
-
 }

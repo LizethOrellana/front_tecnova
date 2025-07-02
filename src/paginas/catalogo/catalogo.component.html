@@ -1,0 +1,54 @@
+<div class="hero-header">
+    <h1>🎉 ¡Explora nuestros productos favoritos!</h1>
+    <p>Calidad, precio y tecnología al alcance de un clic</p>
+</div>
+
+
+<button type="button" (click)="crearProducto()"> Crear Producto
+</button>
+
+
+
+
+
+<button class="btn-open-cart" (click)="mostrarCarrito = !mostrarCarrito">
+    🛒 Ver Carrito ({{ carrito.length }})
+</button>
+<div class="carrito-flotante" [class.activo]="mostrarCarrito">
+    <h2>🛒 Tu carrito</h2>
+
+    <ul>
+        <li *ngFor="let item of carrito; let i = index">
+            <div class="item-row">
+                <span>{{ item.nombre }} – {{ item.precio | currency:'USD' }}</span>
+                <button class="btn-remove" (click)="eliminarDelCarrito(i)">✖</button>
+            </div>
+        </li>
+    </ul>
+
+    <p class="total">Total: {{ total | currency:'USD' }}</p>
+
+    <div class="acciones-carrito">
+        <button class="btn-pagar" (click)="irAPagar()">💳 Ir a pagar</button>
+        <button class="cerrar" (click)="mostrarCarrito = false">Cerrar</button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div class="product-card" *ngFor="let producto of productos">
+        <div class="product-image">
+            <img src="{{producto.imagenUrl}}" alt="{{producto.imagenUrl}}" />
+
+        </div>
+        <div class="product-info">
+            <h3>{{ producto.nombre }}</h3>
+            <p class="descripcion">{{ producto.descripcion }}</p>
+            <p class="precio">{{ producto.precio | currency:'USD' }}</p>
+
+            <button class="btn-cart" (click)="anadirAlCarrito(producto)">
+                🧺 Añadir al carrito
+            </button>
+
+        </div>
+    </div>
+</div>

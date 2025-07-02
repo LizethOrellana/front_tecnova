@@ -1,56 +1,60 @@
-<div class="hero-header">
-  <h1>🎉 ¡Explora nuestros productos favoritos!</h1>
-  <p>Calidad, precio y tecnología al alcance de un clic</p>
-</div>
+<h2>Lista de Productos</h2>
 
+<table class="tabla">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Categoría</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let producto of productos">
+      <td>{{ producto.id }}</td>
 
-<button type="button" (click)="crearProducto()"> Crear Producto
-</button>
+      <!-- Nombre -->
+      <td>
+        <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarNombre">
+          <input [(ngModel)]="productoEditando.nombre" />
+        </ng-container>
+        <ng-template #mostrarNombre>
+          <span>{{ producto.nombre }}</span>
+        </ng-template>
+      </td>
 
+      <!-- Precio -->
+      <td>
+        <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarPrecio">
+          <input type="number" [(ngModel)]="productoEditando.precio" />
+        </ng-container>
+        <ng-template #mostrarPrecio>
+          <span>{{ producto.precio | currency }}</span>
+        </ng-template>
+      </td>
 
+      <!-- Categoría -->
+      <td>
+        <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarCategoria">
+          <input [(ngModel)]="productoEditando.categoriaId" />
+        </ng-container>
+        <ng-template #mostrarCategoria>
+          <span>{{ producto.categoriaId }}</span>
+        </ng-template>
+      </td>
 
-
-
-<button class="btn-open-cart" (click)="mostrarCarrito = !mostrarCarrito">
-  🛒 Ver Carrito ({{ carrito.length }})
-</button>
-<div class="carrito-flotante" [class.activo]="mostrarCarrito">
-  <h2>🛒 Tu carrito</h2>
-
-  <ul>
-    <li *ngFor="let item of carrito; let i = index">
-      <div class="item-row">
-        <span>{{ item.nombre }} – {{ item.precio | currency:'USD' }}</span>
-        <button class="btn-remove" (click)="eliminarDelCarrito(i)">✖</button>
-      </div>
-    </li>
-  </ul>
-
-  <p class="total">Total: {{ total | currency:'USD' }}</p>
-
-  <div class="acciones-carrito">
-    <button class="btn-pagar" (click)="irAPagar()">💳 Ir a pagar</button>
-    <button class="cerrar" (click)="mostrarCarrito = false">Cerrar</button>
-  </div>
-</div>
-
-<div class="grid-container">
-  <div class="product-card" *ngFor="let producto of productos">
-    <div class="product-image">
-      <img src="{{producto.imagenUrl}}" alt="{{producto.imagenUrl}}"  />
-
-    </div>
-    <div class="product-info">
-      <h3>{{ producto.nombre }}</h3>
-      <p class="descripcion">{{ producto.descripcion }}</p> 
-      <p class="precio">{{ producto.precio | currency:'USD' }}</p>
-
-       <button class="btn-cart" (click)="anadirAlCarrito(producto)">
-        🧺 Añadir al carrito
-      </button>
-
-    </div>
-  </div>
-</div>
-
-
+      <!-- Acciones -->
+      <td>
+        <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else botonesEditar">
+          <button (click)="guardarEdicion()">Guardar</button>
+          <button (click)="cancelarEdicion()">Cancelar</button>
+        </ng-container>
+        <ng-template #botonesEditar>
+          <button (click)="editarProducto(producto)">Editar</button>
+        </ng-template>
+        <button (click)="eliminarProducto(producto.id!)">Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
