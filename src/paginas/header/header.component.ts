@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { Menu } from '../../models/Menu';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule,NavigationEnd } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { LoginService } from '../../services/login.service';
 import { EmpresaService } from '../../services/empresa.service';
@@ -16,8 +16,16 @@ import { Empresa } from '../../models/Empresa';
 })
 export class HeaderComponent implements OnInit {
   menus: Menu[] = [];
-
-  constructor(private empresaService: EmpresaService, private menuService: MenuService, public auth: LoginService, @Inject(PLATFORM_ID) private platformId: Object) { }
+  panelAbierto = false;
+  mostrarBoton = false;
+  constructor(private empresaService: EmpresaService,private router: Router, private menuService: MenuService, public auth: LoginService, @Inject(PLATFORM_ID) private platformId: Object) {
+    // Detectar cambios de ruta
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.mostrarBoton = event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home';
+      }
+    });
+   }
 
   empresa: Empresa = {
     nombre: '',
@@ -47,5 +55,31 @@ export class HeaderComponent implements OnInit {
         console.error('Error al obtener la empresa:', err);
       },
     });
+  }
+
+
+
+
+
+
+
+  
+
+  abrirPanel() {
+    this.panelAbierto = true;
+  }
+
+  cerrarPanel() {
+    this.panelAbierto = false;
+  }
+
+  irAEditarEmpresa() {
+    this.router.navigate(['/editarEmpresa']);
+    this.cerrarPanel();
+  }
+
+  irAEditarBanner() {
+    this.router.navigate(['/editarBanner']);
+    this.cerrarPanel();
   }
 }

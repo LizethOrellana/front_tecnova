@@ -14,7 +14,7 @@ export class EmpresaService {
 
   // GET empresa (primer registro, sin id)
   obtener(): Observable<Empresa> {
-    return this.http.get<Empresa>(this.apiUrl);
+    return this.http.get<Empresa>(this.apiUrl+'/primera');
   }
 
   // POST/PUT empresa con banners (tu backend usa POST para crear o actualizar)

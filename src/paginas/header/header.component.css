@@ -48,3 +48,75 @@
     font-size: 16px;
     color: white;
 }
+
+
+
+
+
+
+
+
+
+
+
+/* config-panel.component.css */
+.config-icon {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: linear-gradient(to right, #5a63f6, #f65a7b);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: 1001;
+  transition: transform 0.2s ease;
+}
+.config-icon:hover {
+  transform: scale(1.1);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 300px;
+  height: 100%;
+  background: linear-gradient(to right, #ffffff, #ffa1b6);
+  box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+  padding: 1rem;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+.sidebar.abierto {
+  right: 0;
+}
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sidebar-content {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-content label {
+  font-weight: 600;
+  margin-top: 1rem;
+}
+.sidebar-content input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.sidebar-content button {
+  margin-top: 2rem;
+  padding: 0.7rem;
+  background: linear-gradient(to right, #5a63f6, #f65a7b);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
