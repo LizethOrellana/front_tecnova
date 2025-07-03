@@ -14,14 +14,14 @@ import { ListaCategoriasComponent } from '../paginas/lista-categorias/lista-cate
 import { CrearCategoriaComponent } from '../paginas/crear-categoria/crear-categoria.component';
 import { ListarUsuariosComponent } from '../paginas/listar-usuarios/listar-usuarios.component';
 import { CrearUsuarioComponent } from '../paginas/crear-usuario/crear-usuario.component';
+import { MenusComponent } from '../paginas/menus/menus.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
+    { path: 'sobrenosotros', component: HomeComponent },
     { path: 'header', component: HeaderComponent },
     { path: 'footer', component: FooterComponent },
-    { path: '', component: HomeComponent },
     { path: 'productos', component: ListarProductosComponent },
-    { path: 'catalogo', component: CatalogoComponent },
+    { path: '', component: CatalogoComponent },
     { path: 'login', component: LoginComponent },
     { path: 'crearProducto', component: CrearProductoComponent },
     { path: 'editarEmpresa', component: EditarEmpresaComponent },
@@ -32,7 +32,8 @@ export const routes: Routes = [
     { path: 'crearUsuario', component: CrearUsuarioComponent },
     { path: 'lista-marcas', component: ListaMarcasComponent },
     { path: 'lista-categorias', component: ListaCategoriasComponent },
-    { path: 'lista-usuarios', component: ListarUsuariosComponent }
+    { path: 'lista-usuarios', component: ListarUsuariosComponent },
+    { path: 'menus', component: MenusComponent },
 
 
 ];

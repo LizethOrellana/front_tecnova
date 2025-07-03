@@ -10,12 +10,15 @@
             </li>
 
 
-            <li *ngFor="let item of menus">
-                <a [routerLink]="item.ruta">
-                    <i *ngIf="item.icono" class="{{ item.icono }}"></i>
-                    {{ item.nombre }}
-                </a>
-            </li>
+            <ng-container *ngFor="let item of menus">
+                <li *ngIf="nivelUsuario != null && item.nivel_acceso != null && nivelUsuario >= item.nivel_acceso">
+                    <a [routerLink]="item.ruta">
+                        <i *ngIf="item.icono" class="{{ item.icono }}"></i>
+                        {{ item.nombre }}
+                    </a>
+                </li>
+            </ng-container>
+
             <li *ngIf="nivelUsuario > 0">
                 <button (click)="logout()">Cerrar sesión</button>
             </li>
