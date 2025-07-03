@@ -31,4 +31,8 @@ export class MarcaService {
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  buscarPorNombre(nombre: string): Observable<Marca[]> {
+    return this.http.get<Marca[]>(`${this.apiUrl}/buscar?nombre=${encodeURIComponent(nombre)}`);
+  }
 }

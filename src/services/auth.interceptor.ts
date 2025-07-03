@@ -1,29 +1,30 @@
-import { Injectable } from '@angular/core';
-import {
-    HttpInterceptor,
-    HttpRequest,
-    HttpHandler,
-    HttpEvent
-} from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+    constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
+
+    private isBrowser(): boolean {
+        return isPlatformBrowser(this.platformId);
+    }
+
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token = localStorage.getItem('token');
+        let authReq = req;
 
-        // ✅ No agregar token al endpoint de login
-        if (req.url.includes('/auth/login')) {
-            return next.handle(req);
+        if (this.isBrowser()) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                authReq = req.clone({
+                    setHeaders: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+            }
         }
 
-        if (token) {
-            const authReq = req.clone({
-                setHeaders: { Authorization: `Bearer ${token}` }
-            });
-            return next.handle(authReq);
-        }
-
-        return next.handle(req);
+        return next.handle(authReq);
     }
 }

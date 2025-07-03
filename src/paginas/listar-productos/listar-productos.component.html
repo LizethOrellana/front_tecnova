@@ -1,60 +1,116 @@
-<h2>Lista de Productos</h2>
+<div class="container">
+  <h1>Lista de Productos</h1>
+  <div class="custom_input">
+    <button class="button-search" (click)="buscarProductos()">
+      <svg viewBox="0 0 16 16" class="svg_icon bi-search" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+        </path>
+      </svg>
+    </button>
+    <input [(ngModel)]="nombreBusqueda" (keyup.enter)="buscarProductos()" placeholder="Busca aquí..." type="text"
+      class="input" />
+    <button type="button" (click)="crearProducto()" style="margin-left: 2%;"> Crear Producto
+    </button>
+  </div>
 
-<table class="tabla">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Precio</th>
-      <th>Categoría</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let producto of productos">
-      <td>{{ producto.id }}</td>
+  <div class="tabla-container">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Categoría</th>
+          <th>Marcas</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="datosListos">
+        <tr *ngFor="let producto of productosPaginados">
+          <td>{{ producto.id }}</td>
 
-      <!-- Nombre -->
-      <td>
-        <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarNombre">
-          <input [(ngModel)]="productoEditando.nombre" />
-        </ng-container>
-        <ng-template #mostrarNombre>
-          <span>{{ producto.nombre }}</span>
-        </ng-template>
-      </td>
+          <!-- Nombre -->
+          <td>
+            <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarNombre">
+              <input [(ngModel)]="productoEditando.nombre" />
+            </ng-container>
+            <ng-template #mostrarNombre>
+              <span>{{ producto.nombre }}</span>
+            </ng-template>
+          </td>
 
-      <!-- Precio -->
-      <td>
-        <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarPrecio">
-          <input type="number" [(ngModel)]="productoEditando.precio" />
-        </ng-container>
-        <ng-template #mostrarPrecio>
-          <span>{{ producto.precio | currency }}</span>
-        </ng-template>
-      </td>
+          <!-- Precio -->
+          <td>
+            <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarPrecio">
+              <input type="number" [(ngModel)]="productoEditando.precio" />
+            </ng-container>
+            <ng-template #mostrarPrecio>
+              <span>{{ producto.precio | currency }}</span>
+            </ng-template>
+          </td>
 
-      <!-- Categoría -->
-      <td>
-        <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarCategoria">
-          <input [(ngModel)]="productoEditando.categoriaId" />
-        </ng-container>
-        <ng-template #mostrarCategoria>
-          <span>{{ producto.categoriaId }}</span>
-        </ng-template>
-      </td>
+          <!-- Categoría -->
+          <td>
+            <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarCategoria">
+              <label for="categoria_id">Categoría</label>
+              <select id="categoria_id" name="categoria_id" [(ngModel)]="productoEditando.categoriaId" required>
+                <option value="" disabled>Seleccione una categoría</option>
+                <option *ngFor="let categoria of categorias" [value]="categoria.id">
+                  {{ categoria.nombre }}
+                </option>
+              </select>
+            </ng-container>
+            <ng-template #mostrarCategoria>
+              <span>{{ obtenerNombreCategoria(producto.categoriaId) }}</span>
+            </ng-template>
+          </td>
 
-      <!-- Acciones -->
-      <td>
-        <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else botonesEditar">
-          <button (click)="guardarEdicion()">Guardar</button>
-          <button (click)="cancelarEdicion()">Cancelar</button>
-        </ng-container>
-        <ng-template #botonesEditar>
-          <button (click)="editarProducto(producto)">Editar</button>
-        </ng-template>
-        <button (click)="eliminarProducto(producto.id!)">Eliminar</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <td>
+            <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarMarca">
+              <label for="marca_id">Marcas</label>
+              <select id="marca_id" name="marca_id" [(ngModel)]="productoEditando.marcaId" required>
+                <option value="" disabled>Seleccione una marca</option>
+                <option *ngFor="let marca of marcas" [value]="marca.id">
+                  {{ marca.nombre }}
+                </option>
+              </select>
+            </ng-container>
+            <ng-template #mostrarMarca>
+              <span>{{ obtenerNombreMarca(producto.marcaId) }}</span>
+            </ng-template>
+
+          </td>
+
+          <!-- Acciones -->
+          <td>
+            <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else botonesEditar">
+              <button (click)="guardarEdicion()">Guardar</button>
+              <button (click)="cancelarEdicion()">Cancelar</button>
+            </ng-container>
+            <ng-template #botonesEditar>
+              <button (click)="editarProducto(producto)">Editar</button>
+            </ng-template>
+            <button (click)="eliminarProducto(producto.id!)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Controles de paginación -->
+    <div class="paginacion">
+      <button class="button-paginacion" (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
+        ↩️
+      </button>
+
+      <button class="button-paginacion" *ngFor="let pagina of [].constructor(totalPaginas); let i = index"
+        [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)">
+        {{ i + 1 }}
+      </button>
+
+      <button class="button-paginacion" (click)="cambiarPagina(paginaActual + 1)"
+        [disabled]="paginaActual === totalPaginas">↪️
+      </button>
+    </div>
+  </div>
+</div>

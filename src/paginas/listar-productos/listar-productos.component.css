@@ -1,15 +1,137 @@
-.tabla {
+.container {
   width: 100%;
-  border-collapse: collapse;
+  display: flex;
+  /* display: contents no funciona bien para centrar */
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.tabla th,
-.tabla td {
-  border: 1px solid #ccc;
-  padding: 8px;
+h1 {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 10px 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #5a63f6;
+}
+
+.tabla-container {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 900px;
+  /* limita ancho máximo para mejor lectura */
+  overflow-x: auto;
+  /* azul más suave que "blue" puro */
+  padding: 10px;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+table.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  background-color: white;
+  color: black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+table.tabla th,
+table.tabla td {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
   text-align: left;
 }
 
+table.tabla th {
+  background-color: #5a63f6;
+  color: white;
+  font-weight: bold;
+}
+
+table.tabla tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
 button {
-  margin-right: 5px;
+  margin: 0 5px 5px 0;
+  padding: 5px 12px;
+  border: none;
+  background-color: #f65a7b;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #a93951;
+}
+
+input[type="number"],
+input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
+
+
+.custom_input {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 80%;
+}
+
+.input {
+  font-size: 18px;
+  margin-left: 3%;
+  outline: none;
+  color: #000000;
+}
+
+.input:focus {
+  background: #f2f2f2;
+  border: 1px solid #5a7ec7;
+  border-radius: 10px;
+}
+
+.input::placeholder {
+  color: #dddddd;
+}
+
+.svg_icon {
+  position: absolute;
+  left: 10px;
+  fill: #4660dc;
+  width: 18px;
+  height: 18px;
+}
+
+.paginacion {
+  margin-left: 70%;
+  margin-top: 1%;
+}
+
+.button-paginacion {
+  background-color: transparent;
+  color: black;
+  font-size: 18px;
+}
+
+.button-paginacion:hover {
+  background-color: #c9bcbf;
+}
+
+.button-search {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }

@@ -1,0 +1,106 @@
+<div class="container">
+    <h1>Lista de Marcas</h1>
+    <div class="custom_input">
+        <button class="button-search" (click)="buscarMarcas()">
+            <svg viewBox="0 0 16 16" class="svg_icon bi-search" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                </path>
+            </svg>
+        </button>
+        <input [(ngModel)]="nombreBusqueda" (keyup.enter)="buscarMarcas()" placeholder="Busca aquí..." type="text"
+            class="input" />
+        <button type="button" (click)="crearMarca()" style="margin-left: 2%;"> Crear Marca
+        </button>
+    </div>
+
+    <div class="tabla-container">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>País de Origen</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let marca of marcasPaginados">
+                    <td>{{ marca.id }}</td>
+
+                    <!-- Nombre -->
+                    <td>
+                        <ng-container *ngIf="marcaEditada && marcaEditada.id === marca.id; else mostrarNombre">
+                            <input [(ngModel)]="marcaEditada.nombre" />
+                        </ng-container>
+                        <ng-template #mostrarNombre>
+                            <span>{{ marca.nombre }}</span>
+                        </ng-template>
+                    </td>
+
+                    <!-- País de Origen -->
+                    <td>
+                        <ng-container *ngIf="marcaEditada && marcaEditada.id === marca.id; else mostrarPaisOrigen">
+                            <input [(ngModel)]="marcaEditada.paisOrigen" />
+                        </ng-container>
+                        <ng-template #mostrarPaisOrigen>
+                            <span>{{ marca.paisOrigen }}</span>
+                        </ng-template>
+                    </td>
+
+                    <!-- Estado -->
+                    <td>
+                        <ng-container style="display: flex;"
+                            *ngIf="marcaEditada && marcaEditada.id === marca.id; else mostrarEstado">
+                            <label class="radio-button">
+                                <input type="radio" [(ngModel)]="marcaEditada.estado" name="estado" value="true">
+                                <span class="radio"></span>
+                                Activo
+                            </label>
+
+                            <label class="radio-button">
+                                <input type="radio" [(ngModel)]="marcaEditada.estado" name="estado" value="false">
+                                <span class="radio"></span>
+                                Inactivo
+                            </label>
+                        </ng-container>
+                        <ng-template #mostrarEstado>
+                            <span *ngIf="marca.estado">Activo</span>
+                            <span *ngIf="!marca.estado">Inactivo</span>
+                        </ng-template>
+                    </td>
+
+
+                    <!-- Acciones -->
+                    <td>
+                        <ng-container *ngIf="marcaEditada && marcaEditada.id === marca.id; else botonesEditar">
+                            <button (click)="guardarEdicion()">Guardar</button>
+                            <button (click)="cancelarEdicion()">Cancelar</button>
+                        </ng-container>
+                        <ng-template #botonesEditar>
+                            <button (click)="editarMarca(marca)">Editar</button>
+                        </ng-template>
+                        <button (click)="eliminarMarca(marca.id!)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Controles de paginación -->
+        <div class="paginacion">
+            <button class="button-paginacion" (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
+                ↩️
+            </button>
+
+            <button class="button-paginacion" *ngFor="let pagina of [].constructor(totalPaginas); let i = index"
+                [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)">
+                {{ i + 1 }}
+            </button>
+
+            <button class="button-paginacion" (click)="cambiarPagina(paginaActual + 1)"
+                [disabled]="paginaActual === totalPaginas">↪️
+            </button>
+        </div>
+    </div>
+</div>

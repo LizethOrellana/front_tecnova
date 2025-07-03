@@ -68,8 +68,6 @@ export class CatalogoComponent implements OnInit {
   }
 
 
-  crearProducto() {
-    this.router.navigate(['/crearProducto']);
-  }
+
 
 }

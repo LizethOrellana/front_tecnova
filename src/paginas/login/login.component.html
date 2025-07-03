@@ -1,6 +1,11 @@
-<h2>Iniciar Sesión</h2>
-<form (ngSubmit)="onLogin()">
-    <input [(ngModel)]="username" name="username" placeholder="Usuario" required />
-    <input [(ngModel)]="password" name="password" placeholder="Contraseña" type="password" required />
-    <button type="submit">Entrar</button>
-</form>
+<div class="container">
+    <div class="heading">Iniciar Sesión</div>
+    <form class="form" (ngSubmit)="onLogin()">
+        <input [(ngModel)]="username" placeholder="Username" id="username" name="username" type="text" class="input"
+            required />
+        <input [(ngModel)]="password" placeholder="Password" id="password" name="password" type="password" class="input"
+            required />
+        <span class="forgot-password"><a href="#">Forgot Password ?</a></span>
+        <button type="submit" class="login-button">Ingresar</button>
+    </form>
+</div>

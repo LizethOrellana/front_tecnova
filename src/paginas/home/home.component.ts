@@ -42,14 +42,16 @@ export class HomeComponent implements OnInit {
   }
 
   cargarEmpresa(): void {
-    this.empresaService.obtener().subscribe({
-      next: (data) => {
-        this.empresa = data;
-        console.log('Empresa cargada:', this.empresa);
-      },
-      error: (err) => {
-        console.error('Error al obtener la empresa:', err);
-      },
-    });
+    const empresaLocal = localStorage.getItem('empresa');
+    if (empresaLocal) {
+      try {
+        this.empresa = JSON.parse(empresaLocal);
+        console.log('Empresa cargada desde localStorage:', this.empresa);
+      } catch (error) {
+        console.error('Error al parsear empresa desde localStorage:', error);
+      }
+    } else {
+      console.warn('No se encontró empresa en localStorage');
+    }
   }
 }

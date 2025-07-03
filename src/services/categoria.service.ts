@@ -31,4 +31,8 @@ export class CategoriaService {
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  buscarPorNombre(nombre: string): Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(`${this.apiUrl}/buscar?nombre=${encodeURIComponent(nombre)}`);
+  }
 }

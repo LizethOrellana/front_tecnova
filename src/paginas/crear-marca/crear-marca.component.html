@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="heading">Crear una nueva Marca</div>
+    <form class="form" (ngSubmit)="guardarMarca()" #formProducto="ngForm">
+        <input required="" class="input" type="text" name="nombre" id="nombre" placeholder="Nombre"
+            [(ngModel)]="marca.nombre">
+        <input required="" class="input" type="text" name="paisOrigen" id="paisOrigen" placeholder="Pais de Origen"
+            [(ngModel)]="marca.paisOrigen">
+        <div class="radios">
+            <label class="label">Estado:
+            </label>
+            <label class="radio-button">
+                <input type="radio" [(ngModel)]="marca.estado" name="estado" value="true">
+                <span class="radio"></span>
+                Activo
+            </label>
+
+            <label class="radio-button">
+                <input type="radio" [(ngModel)]="marca.estado" name="estado" value="false">
+                <span class="radio"></span>
+                Inactivo
+            </label>
+        </div>
+
+        <input class="login-button" type="submit" value="Crear">
+
+    </form>
+
+</div>

@@ -6,4 +6,5 @@ export interface Menu {
     activo: boolean;
     orden?: number;
     padre?: Menu;
+    nivel_acceso?: number;
 }
