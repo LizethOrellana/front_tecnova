@@ -20,7 +20,11 @@ export class LoginComponent {
 
   onLogin() {
     this.loginService.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => {
+        this.router.navigate(['/']).then(() => {
+          window.location.reload();
+        });
+      },
       error: () => alert('Credenciales incorrectas')
     });
   }

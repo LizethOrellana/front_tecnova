@@ -8,6 +8,12 @@ import { CrearProductoComponent } from '../paginas/crear-producto/crear-producto
 import { CatalogoComponent } from '../paginas/catalogo/catalogo.component';
 import { EditarEmpresaComponent } from '../paginas/editar-empresa/editar-empresa.component';
 import { EditarBannerComponent } from '../paginas/editar-banner/editar-banner.component';
+import { CrearMarcaComponent } from '../paginas/crear-marca/crear-marca.component';
+import { ListaMarcasComponent } from '../paginas/lista-marcas/lista-marcas.component';
+import { ListaCategoriasComponent } from '../paginas/lista-categorias/lista-categorias.component';
+import { CrearCategoriaComponent } from '../paginas/crear-categoria/crear-categoria.component';
+import { ListarUsuariosComponent } from '../paginas/listar-usuarios/listar-usuarios.component';
+import { CrearUsuarioComponent } from '../paginas/crear-usuario/crear-usuario.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,6 +25,14 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'crearProducto', component: CrearProductoComponent },
     { path: 'editarEmpresa', component: EditarEmpresaComponent },
-    { path: 'editarBanner', component: EditarBannerComponent }
+    { path: 'editarBanner', component: EditarBannerComponent },
+    { path: 'crearProducto', component: CrearProductoComponent },
+    { path: 'crearMarca', component: CrearMarcaComponent },
+    { path: 'crearCategoria', component: CrearCategoriaComponent },
+    { path: 'crearUsuario', component: CrearUsuarioComponent },
+    { path: 'lista-marcas', component: ListaMarcasComponent },
+    { path: 'lista-categorias', component: ListaCategoriasComponent },
+    { path: 'lista-usuarios', component: ListarUsuariosComponent }
+
 
 ];

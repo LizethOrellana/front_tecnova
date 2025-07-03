@@ -4,7 +4,7 @@
         <ul class="menu-list">
             <li class="empresa-header">
                 <a routerLink="/" class="empresa-link">
-                    <img [src]="empresa.logo" alt="Logo" width="30">
+                    <img [src]="empresa.logo" alt="Logo" width="30" />
                     <span>{{ empresa.nombre }}</span>
                 </a>
             </li>
@@ -16,31 +16,13 @@
                     {{ item.nombre }}
                 </a>
             </li>
-            <li><button *ngIf="auth.isAuthenticated()" (click)="auth.logout()">Cerrar sesión</button>
+            <li *ngIf="nivelUsuario > 0">
+                <button (click)="logout()">Cerrar sesión</button>
             </li>
-        </ul>
 
-
-
-        <ul>
-            <!-- config-panel.component.html -->
-    <div class="config-icon" *ngIf="mostrarBoton" (click)="abrirPanel()">
-    ⚙️
-    </div>
-
-    <div class="sidebar" [class.abierto]="panelAbierto">
-    <div class="sidebar-header">
-        <h3 style="color: black;" >Configuración</h3>
-        <button style="border-color: aliceblue;" class="cerrar-icono" (click)="cerrarPanel()" aria-label="Cerrar">
-         <span (click)="cerrarPanel()">❌</span>
-        </button>
-    </div>
-
-    <div class="sidebar-content">
-        <button class="nav-btn" (click)="irAEditarEmpresa()">Editar Empresa</button>
-        <button class="nav-btn" (click)="irAEditarBanner()">Editar Banner</button>
-    </div>
-    </div>
+            <li *ngIf="nivelUsuario === 0">
+                <button [routerLink]="['/login']">Iniciar sesión</button>
+            </li>
 
         </ul>
     </nav>

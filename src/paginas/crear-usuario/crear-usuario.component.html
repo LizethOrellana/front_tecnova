@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="heading">Crear un nuevo Usuario</div>
+    <form class="form" (ngSubmit)="guardarUsuario()" #formProducto="ngForm">
+        <input required="" class="input" type="text" name="nombre" id="nombre" placeholder="Nombre"
+            [(ngModel)]="usuario.nombre">
+        <input required="" class="input" type="text" name="paisOrigen" id="paisOrigen" placeholder="Apellido"
+            [(ngModel)]="usuario.apellido">
+        <input required="" class="input" type="number" name="telefono" id="telefono" placeholder="Teléfono"
+            [(ngModel)]="usuario.telefono">
+        <input required="" class="input" type="text" name="username" id="username" placeholder="Username"
+            [(ngModel)]="usuario.username">
+        <input required="" class="input" type="password" name="password" id="password" placeholder="Contraseña"
+            [(ngModel)]="usuario.password">
+        <select class="input" name="rol" id="rol" [(ngModel)]="usuario.tipoUsuario.secuencial">
+            <option value="" disabled selected>Seleccione un rol</option>
+            <option *ngFor="let tipoUsuario of tiposUsuario" [value]="tipoUsuario.secuencial">
+                {{ tipoUsuario.nombre }}
+            </option>
+        </select>
+
+        <div class="radios">
+            <label class="label">Estado:
+            </label>
+            <label class="radio-button">
+                <input type="radio" [(ngModel)]="usuario.estaActivo" name="estado" value="1">
+                <span class="radio"></span>
+                Activo
+            </label>
+
+            <label class="radio-button">
+                <input type="radio" [(ngModel)]="usuario.estaActivo" name="estado" value="0">
+                <span class="radio"></span>
+                Inactivo
+            </label>
+        </div>
+
+        <input class="login-button" type="submit" value="Crear">
+
+    </form>
+
+</div>

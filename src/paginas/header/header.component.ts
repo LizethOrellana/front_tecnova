@@ -1,85 +1,66 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
+import { AuthService } from '../../services/auth-service';
+import { CommonModule, isPlatformBrowser, NgFor, NgIf } from '@angular/common';
 import { Menu } from '../../models/Menu';
-import { Router, RouterModule,NavigationEnd } from '@angular/router';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { LoginService } from '../../services/login.service';
-import { EmpresaService } from '../../services/empresa.service';
+import { Router, RouterModule } from '@angular/router';
 import { Empresa } from '../../models/Empresa';
+import { EmpresaService } from '../../services/empresa.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, NgIf, NgFor],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  menus: Menu[] = [];
-  panelAbierto = false;
-  mostrarBoton = false;
-  constructor(private empresaService: EmpresaService,private router: Router, private menuService: MenuService, public auth: LoginService, @Inject(PLATFORM_ID) private platformId: Object) {
-    // Detectar cambios de ruta
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.mostrarBoton = event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home';
-      }
-    });
-   }
-
   empresa: Empresa = {
     nombre: '',
     logo: '',
     mision: '',
     vision: '',
-    banners: [],
-  };
+    banners: []
+  }
+
+  menus: Menu[] = [];
+  nivelUsuario: number = 0;
+
+  constructor(
+    private empresaService: EmpresaService, // Asumiendo que tienes un servicio para obtener la empresa
+    private menuService: MenuService,
+    private authService: AuthService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
+      this.nivelUsuario = this.authService.getNivelAcceso(); // Obtén el nivel del usuario
       this.menuService.obtenerMenus().subscribe({
-        next: (menus) => this.menus = menus,
+        next: (menus) => {
+          // Filtra solo activos y que nivel de acceso sea menor o igual al usuario actual
+          this.menus = menus.filter(menu => menu.activo && menu.nivel_acceso! <= this.nivelUsuario);
+        },
         error: (err) => console.error('Error al obtener menús:', err)
       });
       this.cargarEmpresa();
     }
   }
 
-  cargarEmpresa(): void {
+  logout() {
+    this.authService.logout();
+    window.location.reload();
+    this.router.navigate(['/login']);
+  }
+
+  cargarEmpresa() {
     this.empresaService.obtener().subscribe({
-      next: (data) => {
-        this.empresa = data;
-        console.log('Empresa cargada:', this.empresa);
+      next: (empresa) => {
+        this.empresa = empresa;
+        localStorage.setItem('empresa', JSON.stringify(empresa));
       },
-      error: (err) => {
-        console.error('Error al obtener la empresa:', err);
-      },
+      error: (err) => console.error('Error al cargar la empresa:', err)
     });
-  }
-
-
-
-
-
-
-
-  
-
-  abrirPanel() {
-    this.panelAbierto = true;
-  }
-
-  cerrarPanel() {
-    this.panelAbierto = false;
-  }
-
-  irAEditarEmpresa() {
-    this.router.navigate(['/editarEmpresa']);
-    this.cerrarPanel();
-  }
-
-  irAEditarBanner() {
-    this.router.navigate(['/editarBanner']);
-    this.cerrarPanel();
   }
 }

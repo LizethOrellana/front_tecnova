@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="heading">Crear una nueva Categoria</div>
+    <form class="form" (ngSubmit)="guardarCategoria()" #formProducto="ngForm">
+        <input required="" class="input" type="text" name="nombre" id="nombre" placeholder="Nombre"
+            [(ngModel)]="categoria.nombre">
+        <input required="" class="input" type="text" name="descripcion" id="descripcion" placeholder="Descripción"
+            [(ngModel)]="categoria.descripcion">
+        <div class="radios">
+            <label class="label">Estado:
+            </label>
+            <label class="radio-button">
+                <input type="radio" [(ngModel)]="categoria.estado" name="estado" value="true">
+                <span class="radio"></span>
+                Activo
+            </label>
+
+            <label class="radio-button">
+                <input type="radio" [(ngModel)]="categoria.estado" name="estado" value="false">
+                <span class="radio"></span>
+                Inactivo
+            </label>
+        </div>
+
+        <input class="login-button" type="submit" value="Crear">
+
+    </form>
+
+</div>

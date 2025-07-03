@@ -1,0 +1,109 @@
+<div class="container">
+    <h1>Lista de Categorias</h1>
+    <div class="custom_input">
+        <button class="button-search" (click)="buscarCategorias()">
+            <svg viewBox="0 0 16 16" class="svg_icon bi-search" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                </path>
+            </svg>
+        </button>
+        <input [(ngModel)]="nombreBusqueda" (keyup.enter)="buscarCategorias()" placeholder="Busca aquí..." type="text"
+            class="input" />
+        <button type="button" (click)="crearCategoria()" style="margin-left: 2%;"> Crear Categoria
+        </button>
+    </div>
+
+    <div class="tabla-container">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let categoria of categoriasPaginados">
+                    <td>{{ categoria.id }}</td>
+
+                    <!-- Nombre -->
+                    <td>
+                        <ng-container
+                            *ngIf="categoriaEditada && categoriaEditada.id === categoria.id; else mostrarNombre">
+                            <input [(ngModel)]="categoriaEditada.nombre" />
+                        </ng-container>
+                        <ng-template #mostrarNombre>
+                            <span>{{ categoria.nombre }}</span>
+                        </ng-template>
+                    </td>
+
+                    <!-- Descripción -->
+                    <td>
+                        <ng-container
+                            *ngIf="categoriaEditada && categoriaEditada.id === categoria.id; else mostrarPaisOrigen">
+                            <input [(ngModel)]="categoriaEditada.descripcion" />
+                        </ng-container>
+                        <ng-template #mostrarPaisOrigen>
+                            <span>{{ categoria.descripcion }}</span>
+                        </ng-template>
+                    </td>
+
+                    <!-- Estado -->
+                    <td>
+                        <ng-container style="display: flex;"
+                            *ngIf="categoriaEditada && categoriaEditada.id === categoria.id; else mostrarEstado">
+                            <label class="radio-button">
+                                <input type="radio" [(ngModel)]="categoriaEditada.estado" name="estado" value="true">
+                                <span class="radio"></span>
+                                Activo
+                            </label>
+
+                            <label class="radio-button">
+                                <input type="radio" [(ngModel)]="categoriaEditada.estado" name="estado" value="false">
+                                <span class="radio"></span>
+                                Inactivo
+                            </label>
+                        </ng-container>
+                        <ng-template #mostrarEstado>
+                            <span *ngIf="categoria.estado">Activo</span>
+                            <span *ngIf="!categoria.estado">Inactivo</span>
+                        </ng-template>
+                    </td>
+
+
+                    <!-- Acciones -->
+                    <td>
+                        <ng-container
+                            *ngIf="categoriaEditada && categoriaEditada.id === categoria.id; else botonesEditar">
+                            <button (click)="guardarEdicion()">Guardar</button>
+                            <button (click)="cancelarEdicion()">Cancelar</button>
+                        </ng-container>
+                        <ng-template #botonesEditar>
+                            <button (click)="editarCategoria(categoria)">Editar</button>
+                        </ng-template>
+                        <button (click)="eliminarCategoria(categoria.id!)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Controles de paginación -->
+        <div class="paginacion">
+            <button class="button-paginacion" (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
+                ↩️
+            </button>
+
+            <button class="button-paginacion" *ngFor="let pagina of [].constructor(totalPaginas); let i = index"
+                [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)">
+                {{ i + 1 }}
+            </button>
+
+            <button class="button-paginacion" (click)="cambiarPagina(paginaActual + 1)"
+                [disabled]="paginaActual === totalPaginas">↪️
+            </button>
+        </div>
+    </div>
+</div>
