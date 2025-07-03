@@ -14,7 +14,7 @@ import { EmpresaService } from '../../services/empresa.service';
 })
 export class EditarBannerComponent implements OnInit{
     empresa: Empresa = {
-    secuencial: 0,
+    id: 0,
     nombre: '',
     logo: '',
     mision: '',
@@ -34,15 +34,24 @@ export class EditarBannerComponent implements OnInit{
     ngOnInit(): void {
       this.empresaService.obtener().subscribe(data => {
       this.empresa = data;
-      console.log(data)
-      console.log('dato real'+this.empresa)
     });
 
     }
-    guardarCambios() {
-      console.log('Datos guardados:', this.banner);
-      // Aquí podrías llamar a un servicio para actualizar los datos
-      this.router.navigate(['/']); // redirige a inicio o dashboard
-    }
+    
 
-}
+
+    guardarCambios() {
+      this.empresaService.guardarBanner(this.empresa).subscribe({
+        next: (respuesta) => {
+      alert('Banner actualizado correctamente recargue la página para reflejar los cambios');
+          this.router.navigate(['/']); // Redirige a la página principal o donde desees
+
+          // aquí podrías navegar o mostrar un mensaje
+        },
+        error: (err) => {
+          console.error('Error al guardar empresa:', err);
+        }
+      });
+
+    }
+  }

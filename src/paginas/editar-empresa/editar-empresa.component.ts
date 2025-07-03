@@ -16,7 +16,7 @@ import { Empresa } from '../../models/Empresa';
 })
 export class EditarEmpresaComponent implements OnInit{
    empresa: Empresa = {
-    secuencial: 0,
+    id: 0,
     nombre: '',
     logo: '',
     mision: '',
@@ -30,15 +30,20 @@ export class EditarEmpresaComponent implements OnInit{
   ngOnInit(): void {
     this.empresaService.obtener().subscribe(data => {
       this.empresa = data;
-      console.log(data)
-      console.log('dato real'+this.empresa)
     });
    }
 
 
   guardarCambios() {
-    console.log('Datos guardados:', this.empresa);
-    // Aquí podrías llamar a un servicio para actualizar los datos
-    this.router.navigate(['/']); // redirige a inicio o dashboard
-  }
+  this.empresaService.guardar(this.empresa).subscribe({
+    next: (respuesta) => {
+      alert('Empresa actualizada correctamente recargue la página para reflejar los cambios');
+      this.router.navigate(['/']); // Redirige a la página principal o donde desees// Recargar la página para reflejar los cambios
+      // Puedes mostrar un mensaje de éxito o redireccionar
+    },
+    error: (error) => {
+      console.error('Error al actualizar empresa', error);
+    }
+  });
+}
 }
