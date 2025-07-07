@@ -15,6 +15,8 @@ import { CrearCategoriaComponent } from '../paginas/crear-categoria/crear-catego
 import { ListarUsuariosComponent } from '../paginas/listar-usuarios/listar-usuarios.component';
 import { CrearUsuarioComponent } from '../paginas/crear-usuario/crear-usuario.component';
 import { MenusComponent } from '../paginas/menus/menus.component';
+import { ActualizarFooterComponent } from '../paginas/actualizar-footer/actualizar-footer.component';
+import { Contactos } from '../paginas/contactos/contactos.component';
 
 export const routes: Routes = [
     { path: 'sobrenosotros', component: HomeComponent },
@@ -34,6 +36,8 @@ export const routes: Routes = [
     { path: 'lista-categorias', component: ListaCategoriasComponent },
     { path: 'lista-usuarios', component: ListarUsuariosComponent },
     { path: 'menus', component: MenusComponent },
+    { path: 'actualizarFooter', component: ActualizarFooterComponent },
+    { path: 'contactos', component: Contactos }
 
 
 ];

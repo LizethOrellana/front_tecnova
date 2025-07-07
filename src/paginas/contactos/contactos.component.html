@@ -1,0 +1,28 @@
+<div class="contact-container">
+    <div class="contact-card">
+        <div class="contact-header">
+            <h2>📬 ¡Contáctate conmigo!</h2>
+            <p>Déjame tus datos y me comunicaré contigo lo antes posible.</p>
+        </div>
+
+        <form #myForm="ngForm" #formRef (ngSubmit)="enviar()" class="contact-form">
+            <label for="nombre">Nombre</label>
+            <input name="nombre" id="nombre" ngModel required class="contact-input" />
+
+            <label for="telefono">Teléfono</label>
+            <input name="telefono" id="telefono" ngModel required class="contact-input" />
+
+            <label for="email">Email</label>
+            <input name="email" id="email" ngModel required type="email" class="contact-input" />
+
+            <label for="message">Mensaje</label>
+            <textarea name="message" id="message" required ngModel class="contact-textarea"
+                placeholder="Escribe tu mensaje aquí..."></textarea>
+
+            <button type="submit" class="contact-btn">✉️ Enviar</button>
+        </form>
+
+        <p *ngIf="mensajeExito" class="msg-exito">¡Mensaje enviado con éxito!</p>
+        <p *ngIf="mensajeError" class="msg-error">Error al enviar, intenta nuevamente.</p>
+    </div>
+</div>

@@ -2,11 +2,12 @@
     <nav>
 
         <ul class="menu-list">
-            <li class="empresa-header">
+            <li *ngIf="nivelUsuario === 0" style="width:90%;">
                 <a routerLink="/" class="empresa-link">
                     <img [src]="empresa.logo" alt="Logo" width="30" />
                     <span>{{ empresa.nombre }}</span>
                 </a>
+                <a routerLink="/contactos" style="margin-left: 10%;">Contactanos</a>
             </li>
 
 
@@ -19,12 +20,25 @@
                 </li>
             </ng-container>
 
-            <li *ngIf="nivelUsuario > 0">
-                <button (click)="logout()">Cerrar sesión</button>
-            </li>
 
-            <li *ngIf="nivelUsuario === 0">
-                <button [routerLink]="['/login']">Iniciar sesión</button>
+
+            <div class="config-menu-container" *ngIf="nivelUsuario === 1" (mouseleave)="mostrarMenu = false">
+                <img src="https://firebasestorage.googleapis.com/v0/b/fotos-8113a.appspot.com/o/configuraciones.png?alt=media&token=e1cbe303-d793-4378-b050-40a7ecabb76c"
+                    alt="Configuración" class="config-icon" (mouseenter)="mostrarMenu = true" (click)="toggleMenu()" />
+
+                <div class="config-dropdown" *ngIf="mostrarMenu">
+                    <ul>
+                        <li><a routerLink="/editarEmpresa">Editar Empresa</a></li>
+                        <li><a routerLink="/editarBanner">Editar Banner</a></li>
+                        <li><a routerLink="/actualizarFooter">Editar Footer</a></li>
+                        <li><a routerLink="/menus">Menus</a></li>
+                        <li><button (click)="logout()">Cerrar sesión</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <li *ngIf="nivelUsuario === 0" style="width:90%;">
+                <a routerLink="/login" style="margin-left: 3%;">Iniciar sesión</a>
             </li>
 
         </ul>

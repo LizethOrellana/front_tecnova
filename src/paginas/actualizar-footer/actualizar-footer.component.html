@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="heading">Editar Footer</div>
+    <form class="form" (ngSubmit)="actualizarFooter()" #formProducto="ngForm">
+        <input required="" class="input" type="text" name="descripcion" id="descripcion" placeholder="Descripción"
+            [(ngModel)]="footer.descripcion">
+        <input required="" class="input" type="text" name="autores" id="autores" placeholder="Autores"
+            [(ngModel)]="footer.autores">
+        <button class="login-button" type="submit">Actualizar</button>
+    </form>
+
+</div>

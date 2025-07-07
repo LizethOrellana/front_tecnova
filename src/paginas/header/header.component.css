@@ -158,3 +158,61 @@ button {
     transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
   }
 }
+
+.config-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.config-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.config-dropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 0;
+  z-index: 1000;
+  min-width: 160px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.config-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.config-dropdown li {
+  padding: 0.5rem 1rem;
+}
+
+.config-dropdown a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.config-dropdown a:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

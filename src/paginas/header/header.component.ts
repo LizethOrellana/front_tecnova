@@ -63,4 +63,10 @@ export class HeaderComponent implements OnInit {
       error: (err) => console.error('Error al cargar la empresa:', err)
     });
   }
+
+  mostrarMenu: boolean = false;
+
+  toggleMenu() {
+    this.mostrarMenu = !this.mostrarMenu;
+  }
 }
