@@ -3,6 +3,8 @@ import { Producto } from '../../models/Producto';
 import { ProductoServiceService } from '../../services/producto.service';
 import { Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CarritoService } from '../../services/carrito.service';
+import { Carrito } from '../../models/Carrito';
 
 @Component({
   selector: 'app-catalogo',
@@ -25,6 +27,23 @@ export class CatalogoComponent implements OnInit {
           this.productos = [];
         }
       });
+
+      // 🛒 Cargar carrito del localStorage (si existe)
+      const carritoGuardado = localStorage.getItem('carrito');
+      if (carritoGuardado) {
+        this.carrito = JSON.parse(carritoGuardado);
+        this.actualizarTotal();
+      }
+    }
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.productoService.obtenerTodos().subscribe({
+        next: (data) => this.productos = data,
+        error: (err) => {
+          console.error('Error al obtener productos:', err);
+          this.productos = [];
+        }
+      });
     }
   }
   mostrarCarrito: boolean = false;
@@ -34,11 +53,14 @@ export class CatalogoComponent implements OnInit {
   anadirAlCarrito(producto: any) {
     this.carrito.push(producto);
     this.actualizarTotal();
+    localStorage.setItem('carrito', JSON.stringify(this.carrito)); // guardar
   }
+
 
   eliminarDelCarrito(index: number) {
     this.carrito.splice(index, 1);
     this.actualizarTotal();
+    localStorage.setItem('carrito', JSON.stringify(this.carrito)); // guardar
   }
 
   actualizarTotal() {
@@ -46,8 +68,8 @@ export class CatalogoComponent implements OnInit {
   }
 
   irAPagar() {
-    console.log('Redirigir a checkout con:', this.carrito);
-    // Aquí podrías redirigir a otra página o mostrar un modal de confirmación
+    localStorage.setItem('carrito', JSON.stringify(this.carrito));
+    this.router.navigate(['/checkout']);
   }
 
 
@@ -65,9 +87,10 @@ export class CatalogoComponent implements OnInit {
     console.log('Eliminar producto con nombre:', nombre);
     // Aquí podrías hacer una llamada al backend para eliminarlo
     this.productos = this.productos.filter(p => p.nombre !== nombre);
+
   }
+  verHistorial() {
+    this.router.navigate(['/historial']);
 
-
-
-
+  }
 }

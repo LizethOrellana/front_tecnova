@@ -1,0 +1,20 @@
+<div class="checkout-container">
+    <h2>🧾 Resumen de tu compra</h2>
+
+    <ul>
+        <li *ngFor="let p of carrito">
+            {{ p.producto?.nombre }} - {{ p.cantidad }} x ${{ p.producto?.precio }}
+        </li>
+    </ul>
+
+
+    <p *ngIf="carrito.length === 0">No hay productos en el carrito.</p>
+
+    <div class="total-compra">
+        <strong>Total:</strong> {{ calcularTotal() | currency }}
+    </div>
+
+    <button (click)="confirmarCompra()" class="btn-confirmar">
+        ✅ Confirmar Compra
+    </button>
+</div>

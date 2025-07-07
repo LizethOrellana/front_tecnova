@@ -17,6 +17,8 @@ import { CrearUsuarioComponent } from '../paginas/crear-usuario/crear-usuario.co
 import { MenusComponent } from '../paginas/menus/menus.component';
 import { ActualizarFooterComponent } from '../paginas/actualizar-footer/actualizar-footer.component';
 import { Contactos } from '../paginas/contactos/contactos.component';
+import { CheckoutComponent } from '../paginas/checkout/checkout.component';
+import { HistorialCarritoComponent } from '../paginas/historial-carrito/historial-carrito.component';
 
 export const routes: Routes = [
     { path: 'sobrenosotros', component: HomeComponent },
@@ -37,7 +39,9 @@ export const routes: Routes = [
     { path: 'lista-usuarios', component: ListarUsuariosComponent },
     { path: 'menus', component: MenusComponent },
     { path: 'actualizarFooter', component: ActualizarFooterComponent },
-    { path: 'contactos', component: Contactos }
+    { path: 'contactos', component: Contactos },
+    { path: 'checkout', component: CheckoutComponent },
+    { path: 'historial', component: HistorialCarritoComponent }
 
 
 ];

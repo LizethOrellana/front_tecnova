@@ -1,0 +1,38 @@
+<div class="contenedor-historial">
+    <h2>🧾 Historial de Compras</h2>
+
+    <!-- Mensaje si no hay historial -->
+    <div *ngIf="!historial || historial.length === 0">
+        <p>No hay compras registradas.</p>
+    </div>
+
+    <!-- Listado de carritos -->
+    <div *ngFor="let carrito of historial" class="card-compra">
+        <div class="card-header">
+            <span class="fecha">
+                📅 {{ carrito.fechaCreacion | date: 'mediumDate' }}
+            </span>
+            <span class="total">
+                💰 Total:
+                <ng-container *ngIf="calcularTotal(carrito) > 0">
+                    ${{ calcularTotal(carrito) | number: '1.2-2' }}
+                </ng-container>
+                <ng-container *ngIf="calcularTotal(carrito) === 0">
+                    (no disponible)
+                </ng-container>
+            </span>
+        </div>
+
+        <!-- Productos del carrito -->
+        <ul class="lista-productos">
+            <li *ngFor="let p of carrito.productos">
+                🛒 {{ p.producto.nombre }} - {{ p.cantidad }} x ${{ p.producto.precio | number: '1.2-2' }}
+            </li>
+        </ul>
+
+        <!-- Botón de eliminación -->
+        <button (click)="eliminarCarrito(carrito.id)" class="btn-eliminar">
+            🗑️ Eliminar esta compra
+        </button>
+    </div>
+</div>

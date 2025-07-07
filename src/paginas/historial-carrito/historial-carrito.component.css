@@ -1,0 +1,100 @@
+/* Contenedor principal */
+.checkout-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título */
+.checkout-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #3f51b5;
+    /* el mismo morado-azulado de tu encabezado */
+    margin-bottom: 2rem;
+}
+
+/* Tarjeta de cada compra */
+.card-compra {
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-compra:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Encabezado de la tarjeta (fecha y total) */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #444;
+}
+
+.card-header .fecha {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.card-header .total {
+    color: #28a745;
+}
+
+/* Lista de productos comprados */
+.lista-productos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lista-productos li {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 0.96rem;
+    color: #555;
+}
+
+.lista-productos li:last-child {
+    border-bottom: none;
+}
+
+/* Etiquetas de cantidad y precio */
+.badge {
+    background: #ff0072;
+    color: #fff;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    margin-left: 6px;
+}
+
+/* Botón para comprar de nuevo (opcional) */
+.btn-reordenar {
+    margin-top: 14px;
+    padding: 10px 18px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn-reordenar:hover {
+    background-color: #0069d9;
+}

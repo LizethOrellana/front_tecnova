@@ -1,6 +1,13 @@
 export interface Carrito {
-    id?: number;
-    usuario: string;
-    fechaCreacion: string;
-    productos?: any[]; // Podrías tener CarritoDetalle si lo manejas
+    id: number;
+    fechaCreacion: Date;
+    usuario: { secuencial: number };
+    productos: {
+        producto: {
+            id: number;
+            nombre: string;
+            precio: number;
+        };
+        cantidad: number;
+    }[];
 }
