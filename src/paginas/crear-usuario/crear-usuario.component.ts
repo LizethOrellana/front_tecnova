@@ -17,6 +17,7 @@ import { TipoUsuario } from '../../models/TipoUsuario';
 export class CrearUsuarioComponent implements OnInit {
   usuario: Usuario = {
     secuencial: 0,
+    cedula: '',
     nombre: '',
     apellido: '',
     telefono: '',
@@ -50,6 +51,16 @@ export class CrearUsuarioComponent implements OnInit {
   }
 
   guardarUsuario() {
+    if (!/^\d{10}$/.test(this.usuario.cedula)) {
+      alert('La cédula debe contener exactamente 10 dígitos numéricos');
+    }
+    if (!/^\d{10}$/.test(this.usuario.telefono)) {
+      alert('La cédula debe contener exactamente 10 dígitos numéricos');
+    }
+    if (this.usuario.password.length < 6) {
+      alert('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
     this.usuarioService.crear(this.usuario).subscribe({
       next: () => {
         console.log('Usuario creado');

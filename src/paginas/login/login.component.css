@@ -81,3 +81,9 @@
     transform: scale(0.95);
     box-shadow: rgba(133, 189, 215, 0.88) 0px 15px 10px -10px;
 }
+
+.registrarse {
+    background-color: transparent;
+    border: none;
+    color: #5a63f6;
+}

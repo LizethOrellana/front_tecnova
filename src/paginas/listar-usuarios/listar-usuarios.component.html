@@ -10,8 +10,7 @@
         </button>
         <input [(ngModel)]="nombreBusqueda" (keyup.enter)="buscarUsuarios()" placeholder="Busca aquí..." type="text"
             class="input" />
-        <button type="button" (click)="crearUsuario()" style="margin-left: 2%;"> Crear Usuarios
-        </button>
+        <button type="button" (click)="crearUsuario()" style="margin-left: 2%;"> Crear Usuario </button>
     </div>
 
     <div class="tabla-container">
@@ -21,7 +20,7 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
-                    <th>Telefono</th>
+                    <th>Teléfono</th>
                     <th>Username</th>
                     <th *ngIf="usuarioEditado">Contraseña</th>
                     <th>Estado</th>
@@ -34,63 +33,59 @@
 
                     <!-- Nombre -->
                     <td>
-                        <ng-container
-                            *ngIf="usuarioEditado && usuarioEditado.secuencial === usuario.secuencial; else mostrarNombre">
-                            <input [(ngModel)]="usuarioEditado.nombre" />
+                        <ng-container *ngIf="usuarioEditado?.secuencial === usuario.secuencial; else mostrarNombre">
+                            <input [(ngModel)]="usuarioEditado!.nombre" />
                         </ng-container>
                         <ng-template #mostrarNombre>
                             <span>{{ usuario.nombre }}</span>
                         </ng-template>
                     </td>
 
-                    <!--Apellido -->
+                    <!-- Apellido -->
                     <td>
-                        <ng-container *ngIf="usuarioEditado && usuarioEditado.secuencial; else mostrarApellido">
-                            <input [(ngModel)]="usuarioEditado.apellido" />
+                        <ng-container *ngIf="usuarioEditado?.secuencial === usuario.secuencial; else mostrarApellido">
+                            <input [(ngModel)]="usuarioEditado!.apellido" />
                         </ng-container>
                         <ng-template #mostrarApellido>
                             <span>{{ usuario.apellido }}</span>
                         </ng-template>
                     </td>
+
+                    <!-- Teléfono -->
                     <td>
-                        <ng-container
-                            *ngIf="usuarioEditado && usuarioEditado.secuencial === usuario.secuencial; else mostrarTelefono">
-                            <input [(ngModel)]="usuarioEditado.telefono" />
+                        <ng-container *ngIf="usuarioEditado?.secuencial === usuario.secuencial; else mostrarTelefono">
+                            <input [(ngModel)]="usuarioEditado!.telefono" />
                         </ng-container>
                         <ng-template #mostrarTelefono>
                             <span>{{ usuario.telefono }}</span>
                         </ng-template>
                     </td>
+
+                    <!-- Username -->
                     <td>
-                        <ng-container
-                            *ngIf="usuarioEditado && usuarioEditado.secuencial === usuario.secuencial; else mostrarUserName">
-                            <input [(ngModel)]="usuarioEditado.username" />
+                        <ng-container *ngIf="usuarioEditado?.secuencial === usuario.secuencial; else mostrarUsername">
+                            <input [(ngModel)]="usuarioEditado!.username" />
                         </ng-container>
-                        <ng-template #mostrarUserName>
+                        <ng-template #mostrarUsername>
                             <span>{{ usuario.username }}</span>
                         </ng-template>
                     </td>
 
-                    <td *ngIf="usuarioEditado">
-                        <ng-container *ngIf="usuarioEditado && usuarioEditado.secuencial === usuario.secuencial;">
-                            <input type="password" [(ngModel)]="usuarioEditado.password" />
-                        </ng-container>
+                    <!-- Contraseña -->
+                    <td *ngIf="usuarioEditado?.secuencial === usuario.secuencial">
+                        <input type="password" [(ngModel)]="usuarioEditado!.password" />
                     </td>
 
                     <!-- Estado -->
                     <td>
-                        <ng-container style="display: flex;"
-                            *ngIf="usuarioEditado && usuarioEditado.secuencial; else mostrarEstado">
+                        <ng-container *ngIf="usuarioEditado?.secuencial === usuario.secuencial; else mostrarEstado">
                             <label class="radio-button">
-                                <input type="radio" [(ngModel)]="usuarioEditado.estaActivo" name="estado" value="1">
-                                <span class="radio"></span>
-                                Activo
+                                <input type="radio" [(ngModel)]="usuarioEditado!.estaActivo" [value]="1" />
+                                <span class="radio"></span> Activo
                             </label>
-
                             <label class="radio-button">
-                                <input type="radio" [(ngModel)]="usuarioEditado.estaActivo" name="estado" value="0">
-                                <span class="radio"></span>
-                                Inactivo
+                                <input type="radio" [(ngModel)]="usuarioEditado!.estaActivo" [value]="0" />
+                                <span class="radio"></span> Inactivo
                             </label>
                         </ng-container>
                         <ng-template #mostrarEstado>
@@ -99,11 +94,9 @@
                         </ng-template>
                     </td>
 
-
                     <!-- Acciones -->
                     <td>
-                        <ng-container
-                            *ngIf="usuarioEditado && usuarioEditado.secuencial === usuario.secuencial; else botonesEditar">
+                        <ng-container *ngIf="usuarioEditado?.secuencial === usuario.secuencial; else botonesEditar">
                             <button (click)="guardarEdicion()">Guardar</button>
                             <button (click)="cancelarEdicion()">Cancelar</button>
                         </ng-container>

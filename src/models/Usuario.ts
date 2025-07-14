@@ -2,6 +2,7 @@ import { TipoUsuario } from "./TipoUsuario";
 
 export interface Usuario {
     secuencial: number;
+    cedula: string
     nombre: string;
     apellido: string;
     telefono: string;

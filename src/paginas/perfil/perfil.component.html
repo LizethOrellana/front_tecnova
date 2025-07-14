@@ -1,0 +1,23 @@
+<div class="container">
+    <div style="justify-content: center; width: 100%; display: flex;">
+        <img src="https://firebasestorage.googleapis.com/v0/b/fotos-8113a.appspot.com/o/usuario%20(1).png?alt=media&token=9c208c8a-9f31-482d-b2d0-0a34fd1ec5c0"
+            alt="Perfil" class="perfil-icon" />
+    </div>
+    <div class="heading">Mi perfil</div>
+    <form class="form" (ngSubmit)="guardarUsuario()" #formProducto="ngForm">
+        <input required="" class="input" type="text" name="cedula" id="cedula" placeholder="Cédula" disabled required
+            [(ngModel)]="usuario!.cedula">
+        <input required="" class="input" type="text" name="nombre" id="nombre" placeholder="Nombre" required
+            [(ngModel)]="usuario!.nombre">
+        <input required="" class="input" type="text" name="paisOrigen" id="paisOrigen" placeholder="Apellido" required
+            [(ngModel)]="usuario!.apellido">
+        <input required="" class="input" type="number" name="telefono" id="telefono" placeholder="Teléfono" required
+            [(ngModel)]="usuario!.telefono">
+        <input required="" class="input" type="text" name="username" id="username" placeholder="Username" required
+            [(ngModel)]="usuario!.username">
+
+        <input class="login-button" type="submit" value="Guardar Cambios">
+
+    </form>
+
+</div>

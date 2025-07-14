@@ -16,6 +16,21 @@ export class ListarUsuariosComponent {
   usuarios: Usuario[] = [];
   usuarioEditado: Usuario | null = null;
   nombreBusqueda: string = '';
+  usuario: Usuario = {
+    secuencial: 0,
+    cedula: '',
+    nombre: '',
+    apellido: '',
+    telefono: '',
+    username: '',
+    password: '',
+    estaActivo: 0,
+    tipoUsuario: {
+      secuencial: 0,
+      nombre: '',
+      estado: false
+    }
+  }
 
 
   constructor(private usuarioService: UsuarioService, private router: Router) { }
@@ -82,7 +97,12 @@ export class ListarUsuariosComponent {
     }
 
     this.usuarioService.buscarPorNombre(this.nombreBusqueda).subscribe({
-      next: (res) => this.usuarios = res,
+      next: (res) => {
+        this.usuario = res
+        this.usuarios = [];
+        this.usuarios.push(this.usuario);
+      },
+
       error: (err) => console.error('Error al buscar marcas:', err)
     });
   }

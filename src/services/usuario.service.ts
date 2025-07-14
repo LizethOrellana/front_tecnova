@@ -32,7 +32,7 @@ export class UsuarioService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  buscarPorNombre(nombre: string): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(`${this.apiUrl}/buscar?nombre=${encodeURIComponent(nombre)}`);
+  buscarPorNombre(nombre: string): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.apiUrl}/username/${nombre}`);
   }
 }

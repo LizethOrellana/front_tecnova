@@ -1,6 +1,8 @@
 <div class="container">
     <div class="heading">Crear un nuevo Usuario</div>
     <form class="form" (ngSubmit)="guardarUsuario()" #formProducto="ngForm">
+        <input required="" class="input" type="text" name="cedula" id="cedula" placeholder="Cedula"
+            [(ngModel)]="usuario.cedula">
         <input required="" class="input" type="text" name="nombre" id="nombre" placeholder="Nombre"
             [(ngModel)]="usuario.nombre">
         <input required="" class="input" type="text" name="paisOrigen" id="paisOrigen" placeholder="Apellido"

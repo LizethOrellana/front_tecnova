@@ -1,7 +1,9 @@
+import { Usuario } from "./Usuario";
+
 export interface Pedido {
     id?: number;
-    usuario: string; // o mejor: Usuario si tienes el modelo
+    usuario: Usuario; // o mejor: Usuario si tienes el modelo
     total: number;
     estado: string;
-    fechaPedido: string;
+    fechaPedido: Date;
 }

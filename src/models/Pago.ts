@@ -3,5 +3,5 @@ export interface Pago {
     pedido: any; // Podrías usar tipo Pedido si está relacionado
     metodoPago: string;
     estadoPago: string;
-    fechaPago: string;
+    fechaPago: Date;
 }

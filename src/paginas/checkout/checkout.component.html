@@ -2,19 +2,32 @@
     <h2>🧾 Resumen de tu compra</h2>
 
     <ul>
-        <li *ngFor="let p of carrito">
-            {{ p.producto?.nombre }} - {{ p.cantidad }} x ${{ p.producto?.precio }}
-        </li>
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of carrito">
+                    <td>{{ p.producto?.nombre }}</td>
+                    <td>{{ p.cantidad }}</td>
+                    <td>${{ p.producto?.precio }}</td>
+                </tr>
+            </tbody>
+        </table>
     </ul>
 
 
     <p *ngIf="carrito.length === 0">No hay productos en el carrito.</p>
 
     <div class="total-compra">
-        <strong>Total:</strong> {{ calcularTotal() | currency }}
+        <span>{{ total | currency:'USD' }}</span>
     </div>
 
     <button (click)="confirmarCompra()" class="btn-confirmar">
-        ✅ Confirmar Compra
+        ✅ confirmar pedio - Hacer el pago
     </button>
 </div>

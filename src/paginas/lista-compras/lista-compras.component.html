@@ -1,0 +1,79 @@
+<div class="container">
+    <h1>Lista de Compras</h1>
+    <!--<div class="custom_input">
+        <button class="button-search" (click)="buscarMarcas()">
+            <svg viewBox="0 0 16 16" class="svg_icon bi-search" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+                </path>
+            </svg>
+        </button>
+        <input [(ngModel)]="nombreBusqueda" (keyup.enter)="buscarMarcas()" placeholder="Busca aquí..." type="text"
+            class="input" />
+        <button type="button" (click)="crearMarca()" style="margin-left: 2%;"> Crear Marca
+        </button>
+    </div>-->
+
+    <div class="tabla-container">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Cédula</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                    <th>Metodo Pago</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pago of pagos">
+                    <td>{{ pago.id }}</td>
+
+                    <!-- Cedula -->
+                    <td>
+                        <span>{{ pago.pedido.usuario.cedula}}</span>
+                    </td>
+
+                    <!-- Nombre -->
+                    <td>
+                        <span>{{ pago.pedido.usuario.nombre || pago.pedido.usuario.apellido}}</span>
+                    </td>
+
+                    <!-- País de Origen -->
+                    <td>
+                        <span>{{ pago.fechaPago}}</span>
+                    </td>
+
+                    <!-- Estado -->
+                    <td>
+
+                        <span>{{pago.metodoPago}}</span>
+                    </td>
+
+
+                    <!-- Acciones -->
+                    <td>
+                        <span>${{ pago.pedido.total }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Controles de paginación -->
+        <div class="paginacion">
+            <button class="button-paginacion" (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
+                ↩️
+            </button>
+
+            <button class="button-paginacion" *ngFor="let pagina of [].constructor(totalPaginas); let i = index"
+                [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)">
+                {{ i + 1 }}
+            </button>
+
+            <button class="button-paginacion" (click)="cambiarPagina(paginaActual + 1)"
+                [disabled]="paginaActual === totalPaginas">↪️
+            </button>
+        </div>
+    </div>
+</div>

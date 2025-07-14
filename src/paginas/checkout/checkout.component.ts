@@ -1,59 +1,85 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CarritoService } from '../../services/carrito.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Carrito } from '../../models/Carrito';
+import { FormsModule } from '@angular/forms';
+import { PedidoService } from '../../services/pedido.service';
+import { Pedido } from '../../models/Pedido';
+import { AuthService } from '../../services/auth-service';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class CheckoutComponent implements OnInit {
   carrito: { producto: any; cantidad: number }[] = [];
-  usuarioId: number = 1;
+  total: number = 0;
 
   constructor(
-    private carritoService: CarritoService,
-    private router: Router
+    private authService: AuthService,
+    private pedidoService: PedidoService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
-    const carritoGuardado = localStorage.getItem('carrito');
-    if (carritoGuardado) {
-      this.carrito = JSON.parse(carritoGuardado);
-      console.log('🛒 Carrito cargado para confirmar compra:', this.carrito);
-    } else {
-      this.carrito = [];
-      console.warn('⚠️ No hay productos en el carrito');
+    if (isPlatformBrowser(this.platformId)) {
+      const carritoGuardado = localStorage.getItem('carrito');
+      if (carritoGuardado) {
+        const parsed = JSON.parse(carritoGuardado);
+        if (parsed.productos && Array.isArray(parsed.productos)) {
+          this.carrito = parsed.productos;
+          this.calcularTotal();
+        }
+      } else {
+        this.carrito = [];
+        console.warn('⚠️ No hay productos en el carrito');
+      }
     }
   }
 
-  confirmarCompra() {
-    const carritoData: Carrito = {
-      id: 0,
-      fechaCreacion: new Date(),
-      usuario: { secuencial: this.usuarioId },
-      productos: this.carrito
-    };
-
-    this.carritoService.crear(carritoData).subscribe({
-      next: () => {
-        alert('✅ Compra registrada');
-        localStorage.removeItem('carrito');
-        this.router.navigate(['/historial']);
-      },
-      error: (err) => {
-        console.error('Error al registrar compra:', err);
-      }
-    });
+  calcularTotal() {
+    this.total = this.carrito.reduce((acc, item) => {
+      const precio = item.producto?.precio ?? 0;
+      const cantidad = item.cantidad ?? 1;
+      return acc + precio * cantidad;
+    }, 0);
   }
 
-  calcularTotal(): number {
-    return this.carrito.reduce((acc, p) => {
-      return acc + (p.producto?.precio || 0) * (p.cantidad || 1);
-    }, 0);
+  confirmarCompra() {
+    const usuario = this.authService.getUserData();
+    console.log('Usuario autenticado:', usuario);
+    if (!usuario) {
+      alert('Usuario no autenticado');
+      return;
+    }
+
+    const pedido: Pedido = {
+      usuario: usuario,
+      total: this.total,
+      estado: 'pendiente',
+      fechaPedido: new Date()
+    };
+    console.log('Pedido a registrar:', pedido);
+
+    this.pedidoService.crear(pedido).subscribe(
+      (response) => {
+        alert('✅ Pedido registrado');
+        console.log('Pedido registrado exitosamente:', response);
+        this.router.navigate(['/crearPago']);
+        localStorage.setItem('pedido', JSON.stringify(response));
+        console.log('Pedido registrado:', pedido);
+      },
+      (err) => {
+        console.error('Error al registrar pedido:', err);
+      }
+    );
+
   }
 }

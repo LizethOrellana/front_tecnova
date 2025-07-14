@@ -1,13 +1,12 @@
+import { CarritoProducto } from "./CarritoProducto";
+
 export interface Carrito {
-    id: number;
+    id?: number;
+    usuario: {
+        secuencial: number;
+    };
     fechaCreacion: Date;
-    usuario: { secuencial: number };
-    productos: {
-        producto: {
-            id: number;
-            nombre: string;
-            precio: number;
-        };
-        cantidad: number;
-    }[];
+    estado: boolean;
+    estado_proceso: string;
+    productos: CarritoProducto[];
 }

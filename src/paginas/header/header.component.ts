@@ -37,10 +37,12 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.nivelUsuario = this.authService.getNivelAcceso(); // Obtén el nivel del usuario
+      console.log('NivelAcceso:', this.nivelUsuario);
       this.menuService.obtenerMenus().subscribe({
         next: (menus) => {
           // Filtra solo activos y que nivel de acceso sea menor o igual al usuario actual
-          this.menus = menus.filter(menu => menu.activo && menu.nivel_acceso! <= this.nivelUsuario);
+          this.menus = menus.filter(menu => menu.activo && menu.nivel_acceso! === this.nivelUsuario);
+
         },
         error: (err) => console.error('Error al obtener menús:', err)
       });
@@ -51,7 +53,9 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     window.location.reload();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
   }
 
   cargarEmpresa() {

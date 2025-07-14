@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="heading">¡Regístrate ahora y empieza a disfrutar de todos los beneficios!</div>
+    <form class="form" (ngSubmit)="guardarUsuario()" #formProducto="ngForm">
+        <input required="" class="input" type="text" name="cedula" id="cedula" placeholder="Cedula"
+            [(ngModel)]="usuario.cedula">
+        <input required="" class="input" type="text" name="nombre" id="nombre" placeholder="Nombre"
+            [(ngModel)]="usuario.nombre">
+        <input required="" class="input" type="text" name="paisOrigen" id="paisOrigen" placeholder="Apellido"
+            [(ngModel)]="usuario.apellido">
+        <input required="" class="input" type="number" name="telefono" id="telefono" placeholder="Teléfono"
+            [(ngModel)]="usuario.telefono">
+        <input required="" class="input" type="text" name="username" id="username" placeholder="Username"
+            [(ngModel)]="usuario.username">
+        <input required="" class="input" type="password" name="password" id="password" placeholder="Contraseña"
+            [(ngModel)]="usuario.password">
+        <input required="" class="input" type="password" name="confirmPassword" id="confirmPassword"
+            placeholder="Confirmar Contraseña" [(ngModel)]="confirmPassword">
+
+        <input class="login-button" type="submit" value="¡Crear mi cuenta ahora!">
+
+    </form>
+
+</div>

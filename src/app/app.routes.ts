@@ -19,6 +19,10 @@ import { ActualizarFooterComponent } from '../paginas/actualizar-footer/actualiz
 import { Contactos } from '../paginas/contactos/contactos.component';
 import { CheckoutComponent } from '../paginas/checkout/checkout.component';
 import { HistorialCarritoComponent } from '../paginas/historial-carrito/historial-carrito.component';
+import { CrearPagoComponent } from '../paginas/crear-pago/crear-pago.component';
+import { ListaComprasComponent } from '../paginas/lista-compras/lista-compras.component';
+import { RegistrarseComponent } from '../paginas/registrarse/registrarse.component';
+import { PerfilComponent } from '../paginas/perfil/perfil.component';
 
 export const routes: Routes = [
     { path: 'sobrenosotros', component: HomeComponent },
@@ -41,7 +45,9 @@ export const routes: Routes = [
     { path: 'actualizarFooter', component: ActualizarFooterComponent },
     { path: 'contactos', component: Contactos },
     { path: 'checkout', component: CheckoutComponent },
-    { path: 'historial', component: HistorialCarritoComponent }
-
-
+    { path: 'historial', component: HistorialCarritoComponent },
+    { path: 'crearPago', component: CrearPagoComponent },
+    { path: 'lista-pagos', component: ListaComprasComponent },
+    { path: 'registrarse', component: RegistrarseComponent },
+    { path: 'perfil', component: PerfilComponent }
 ];

@@ -59,6 +59,23 @@ export class AuthService {
     return payload.sub || '';
   }
 
+  getUserId(): number | null {
+    if (!this.isBrowser()) return null;
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log(payload);
+      const id = parseInt(payload.secuencial);
+      console.log('ID del usuario:', id);
+      return isNaN(id) || id <= 0 ? null : id;
+    } catch {
+      return null;
+    }
+  }
+
+
   logout() {
     if (this.isBrowser()) {
       localStorage.clear();
@@ -74,6 +91,7 @@ export class AuthService {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       return {
+        secuencial: payload.secuencial,
         nombre: payload.nombre,
         apellido: payload.apellido,
         telefono: payload.telefono,
