@@ -59,11 +59,15 @@ export class EditarBannerComponent implements OnInit {
       ...this.bannerNuevo,
       empresa: this.empresa
     };
+    if (this.bannerNuevo.descripcion == "" || this.bannerNuevo.url == "") {
+      alert("LLenar todos los campos")
+    } else {
 
-    this.bannerService.crear(nuevoBanner).subscribe(() => {
-      this.bannerNuevo = { url: '', descripcion: '', estaBanner: 1, empresa: this.empresa };
-      this.cargarBanners();
-    });
+      this.bannerService.crear(nuevoBanner).subscribe(() => {
+        this.bannerNuevo = { url: '', descripcion: '', estaBanner: 1, empresa: this.empresa };
+        this.cargarBanners();
+      });
+    }
   }
 
   editarBanner(banner: Banner) {

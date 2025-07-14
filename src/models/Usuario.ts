@@ -10,4 +10,5 @@ export interface Usuario {
     password: string;
     estaActivo: number;
     tipoUsuario: TipoUsuario;
+    pregunta: string;
 }

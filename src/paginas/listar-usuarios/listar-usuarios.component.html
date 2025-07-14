@@ -18,6 +18,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Cédula</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Teléfono</th>
@@ -30,7 +31,7 @@
             <tbody>
                 <tr *ngFor="let usuario of usuariosPaginados">
                     <td>{{ usuario.secuencial }}</td>
-
+                    <td>{{ usuario.cedula }}</td>
                     <!-- Nombre -->
                     <td>
                         <ng-container *ngIf="usuarioEditado?.secuencial === usuario.secuencial; else mostrarNombre">

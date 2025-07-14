@@ -22,13 +22,17 @@ export class CrearCategoriaComponent {
   constructor(private categoriaService: CategoriaService, private router: Router) { }
 
   guardarCategoria() {
-    this.categoriaService.crear(this.categoria).subscribe({
-      next: () => {
-        console.log('Categoria creado');
-        this.router.navigate(['/lista-categorias']);
-      },
-      error: (error) => console.error('Error al guardar', error)
-    });
+    if (this.categoria.nombre == "" || this.categoria.descripcion == "") {
+      alert("Complete los campos")
+    } else {
+      this.categoriaService.crear(this.categoria).subscribe({
+        next: () => {
+          console.log('Categoria creado');
+          this.router.navigate(['/lista-categorias']);
+        },
+        error: (error) => console.error('Error al guardar', error)
+      });
+    }
   }
 
 }

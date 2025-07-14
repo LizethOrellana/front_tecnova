@@ -92,6 +92,7 @@ export class AuthService {
       const payload = JSON.parse(atob(token.split('.')[1]));
       return {
         secuencial: payload.secuencial,
+        cedula: payload.cedula,
         nombre: payload.nombre,
         apellido: payload.apellido,
         telefono: payload.telefono,

@@ -26,7 +26,8 @@ export class RegistrarseComponent {
       secuencial: 0,
       nombre: 'Cliente', // Asignar un tipo de usuario por defecto
       estado: true
-    }
+    },
+    pregunta: ''
   }
   confirmPassword: string = '';
 

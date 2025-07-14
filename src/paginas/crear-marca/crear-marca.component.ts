@@ -22,13 +22,17 @@ export class CrearMarcaComponent {
   constructor(private marcaService: MarcaService, private router: Router) { }
 
   guardarMarca() {
-    this.marcaService.crear(this.marca).subscribe({
-      next: () => {
-        console.log('Marca creado');
-        this.router.navigate(['/lista-marcas']);
-      },
-      error: (error) => console.error('Error al guardar', error)
-    });
+    if (this.marca.nombre == "" || this.marca.paisOrigen == "") {
+      alert("Llene todos los campos")
+    } else {
+      this.marcaService.crear(this.marca).subscribe({
+        next: () => {
+          console.log('Marca creado');
+          this.router.navigate(['/lista-marcas']);
+        },
+        error: (error) => console.error('Error al guardar', error)
+      });
+    }
   }
 
 }

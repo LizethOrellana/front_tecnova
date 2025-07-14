@@ -33,14 +33,18 @@ export class ActualizarFooterComponent implements OnInit {
   }
 
   actualizarFooter() {
-    if (this.footer.id) {
-      this.footerServices.actualizar(this.footer.id, this.footer).subscribe(() => {
-        alert('Footer actualizado correctamente');
-      }, error => {
-        console.error('Error al actualizar el footer', error);
-      });
+    if (this.footer.autores == "" || this.footer.descripcion == "") {
+      alert("LLene todos los campos")
     } else {
-      alert('No se pudo actualizar el footer, ID no encontrado');
+      if (this.footer.id) {
+        this.footerServices.actualizar(this.footer.id, this.footer).subscribe(() => {
+          alert('Footer actualizado correctamente');
+        }, error => {
+          console.error('Error al actualizar el footer', error);
+        });
+      } else {
+        alert('No se pudo actualizar el footer, ID no encontrado');
+      }
     }
   }
 }

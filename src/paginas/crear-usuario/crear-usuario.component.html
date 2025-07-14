@@ -7,12 +7,14 @@
             [(ngModel)]="usuario.nombre">
         <input required="" class="input" type="text" name="paisOrigen" id="paisOrigen" placeholder="Apellido"
             [(ngModel)]="usuario.apellido">
-        <input required="" class="input" type="number" name="telefono" id="telefono" placeholder="Teléfono"
+        <input required="" class="input" type="text" name="telefono" id="telefono" placeholder="Teléfono"
             [(ngModel)]="usuario.telefono">
         <input required="" class="input" type="text" name="username" id="username" placeholder="Username"
             [(ngModel)]="usuario.username">
         <input required="" class="input" type="password" name="password" id="password" placeholder="Contraseña"
             [(ngModel)]="usuario.password">
+        <input required="" class="input" type="text" name="pregunta" id="pregunta"
+            placeholder="Lugar favorito para viajar" [(ngModel)]="usuario.pregunta">
         <select class="input" name="rol" id="rol" [(ngModel)]="usuario.tipoUsuario.secuencial">
             <option value="" disabled selected>Seleccione un rol</option>
             <option *ngFor="let tipoUsuario of tiposUsuario" [value]="tipoUsuario.secuencial">

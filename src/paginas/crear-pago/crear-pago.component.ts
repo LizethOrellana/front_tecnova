@@ -20,7 +20,7 @@ import { CarritoService } from '../../services/carrito.service';
 export class CrearPagoComponent implements OnInit {
   pedido: Pedido = {
     id: 0,
-    usuario: { secuencial: 0, nombre: '', apellido: '', cedula: '', telefono: '', username: '', password: '', estaActivo: 1, tipoUsuario: { secuencial: 0, nombre: '', estado: true } },
+    usuario: { secuencial: 0, nombre: '', apellido: '', cedula: '', telefono: '', username: '', password: '', estaActivo: 1, tipoUsuario: { secuencial: 0, nombre: '', estado: true }, pregunta: '' },
     total: 0,
     estado: 'pendiente',
     fechaPedido: new Date()

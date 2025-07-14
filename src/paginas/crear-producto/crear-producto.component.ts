@@ -36,13 +36,24 @@ export class CrearProductoComponent implements OnInit {
     precio: 0,
     stock: 0,
     imagenUrl: '',
-    categoriaId: 1,
-    marcaId: 1,
+    categoria: undefined,
+    marca: undefined,
     fecha_creacion: ''
   };
 
   guardarProducto() {
+    if (
+      this.producto.nombre === "" || this.producto.precio == null || this.producto.stock == null ||
+      this.producto.descripcion === "" || this.producto.categoria == null || this.producto.marca == null
+    ) {
+      alert("LLene todos los campos");
+      return;
+    }
+
+    // 🕓 Fecha
     this.producto.fecha_creacion = new Date().toISOString().split('T')[0];
+    console.log("Producto a crear:", this.producto);
+
     this.productoService.crear(this.producto).subscribe({
       next: () => {
         console.log('Producto creado');
@@ -52,23 +63,24 @@ export class CrearProductoComponent implements OnInit {
     });
   }
 
+
   selectedFile: File | null = null;
 
   onFileSelected(event: any): void {
-  const file = event.target.files[0];
-  if (file) {
-    this.selectedFile = file;
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
 
-    // Opcional: crea una vista previa local
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.producto.imagenUrl = reader.result as string;
-    };
-    reader.readAsDataURL(file);
+      // Opcional: crea una vista previa local
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.producto.imagenUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
 
-    console.log('Archivo seleccionado:', this.selectedFile);
+      console.log('Archivo seleccionado:', this.selectedFile);
+    }
   }
-}
 
   obtenerCategorias() {
     this.categoriaService.obtenerTodas().subscribe({

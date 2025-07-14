@@ -1,3 +1,6 @@
+import { Categoria } from "./Categoria";
+import { Marca } from "./Marca";
+
 export interface Producto {
     id?: number;
     nombre: string;
@@ -6,7 +9,7 @@ export interface Producto {
     precio: number;
     stock: number;
     imagenUrl?: string;
-    categoriaId?: number;
-    marcaId?: number;
+    categoria?: Categoria;
+    marca?: Marca;
     estado?: boolean;
 }

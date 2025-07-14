@@ -29,7 +29,8 @@ export class ListarUsuariosComponent {
       secuencial: 0,
       nombre: '',
       estado: false
-    }
+    },
+    pregunta: '',
   }
 
 
@@ -101,9 +102,15 @@ export class ListarUsuariosComponent {
         this.usuario = res
         this.usuarios = [];
         this.usuarios.push(this.usuario);
+        console.log(this.usuarios)
+        if (this.usuarios.length == 0) {
+          alert("No se encontro el usuario")
+          this.cargarUsuarios();
+        }
       },
 
       error: (err) => console.error('Error al buscar marcas:', err)
     });
+
   }
 }

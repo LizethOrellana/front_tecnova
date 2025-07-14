@@ -3,13 +3,13 @@
   <div class="heading">Editar Empresa</div>
   <form class="form" (ngSubmit)="guardarCambios()">
 
-    <input type="text" class="input" [(ngModel)]="empresa.nombre" name="nombre" placeholder="Nombre" />
+    <input type="text" class="input" [(ngModel)]="empresa.nombre" name="nombre" placeholder="Nombre" required="" />
 
     <input type="url" class="input" [(ngModel)]="empresa.logo" name="logo" required placeholder="URL  de Logo" />
 
-    <input type="text" class="input" [(ngModel)]="empresa.mision" name="mision" placeholder="Mision" />
+    <input type="text" class="input" [(ngModel)]="empresa.mision" name="mision" placeholder="Mision" required />
 
-    <input type="email" class="input" [(ngModel)]="empresa.vision" name="vision" placeholder="Vision" />
+    <input type="email" class="input" [(ngModel)]="empresa.vision" name="vision" placeholder="Vision" required />
 
     <button type="submit" class="login-button">Guardar</button>
   </form>

@@ -28,7 +28,8 @@ export class CrearUsuarioComponent implements OnInit {
       secuencial: 0,
       nombre: '',
       estado: false
-    }
+    },
+    pregunta: '',
   };
 
   tiposUsuario: TipoUsuario[] = [];
@@ -55,19 +56,23 @@ export class CrearUsuarioComponent implements OnInit {
       alert('La cédula debe contener exactamente 10 dígitos numéricos');
     }
     if (!/^\d{10}$/.test(this.usuario.telefono)) {
-      alert('La cédula debe contener exactamente 10 dígitos numéricos');
+      alert('El teléfono debe contener exactamente 10 dígitos numéricos');
     }
     if (this.usuario.password.length < 6) {
       alert('La contraseña debe tener al menos 6 caracteres');
       return;
     }
-    this.usuarioService.crear(this.usuario).subscribe({
-      next: () => {
-        console.log('Usuario creado');
-        this.router.navigate(['/lista-usuarios']);
-      },
-      error: (error) => console.error('Error al guardar', error)
-    });
+    if (this.usuario.nombre == "" || this.usuario.apellido == "" || this.usuario.username == "" || this.usuario.tipoUsuario.secuencial == 0) {
+      alert("Llene todos los campos")
+    } else {
+      this.usuarioService.crear(this.usuario).subscribe({
+        next: () => {
+          console.log('Usuario creado');
+          this.router.navigate(['/lista-usuarios']);
+        },
+        error: (error) => console.error('Error al guardar', error)
+      });
+    }
   }
 
 }

@@ -35,4 +35,19 @@ export class UsuarioService {
   buscarPorNombre(nombre: string): Observable<Usuario> {
     return this.http.get<Usuario>(`${this.apiUrl}/username/${nombre}`);
   }
+
+  // Verificar cédula y obtener pregunta de seguridad
+  obtenerPreguntaPorCedula(cedula: string): Observable<string> {
+    return this.http.get(`${this.apiUrl}/verificar-cedula/${cedula}`, { responseType: 'text' });
+  }
+
+  actualizarPassword(cedula: string, nuevaPassword: string): Observable<any> {
+    const body = { nuevaPassword };  // ojo que la clave es 'nuevaPassword', debe coincidir con el backend
+    return this.http.put(`${this.apiUrl}/actualizar-password/${cedula}`, body);
+  }
+
+
+
+
+
 }

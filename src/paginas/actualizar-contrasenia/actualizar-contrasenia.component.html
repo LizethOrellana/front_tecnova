@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="heading">¿Olvidaste tu contraseña? Recupérala aquí</div>
+
+    <!-- Paso 1: Ingresar cédula -->
+    <div *ngIf="mostrarCedula">
+        <form class="form" (ngSubmit)="verificar()">
+            <input required class="input" type="text" name="cedula" id="cedula" placeholder="Escriba su cédula"
+                [(ngModel)]="cedula" />
+            <button type="submit" class="login-button">Verificar</button>
+        </form>
+    </div>
+
+    <!-- Paso 2: Mostrar pregunta de seguridad -->
+    <div *ngIf="mostrarPregunta">
+        <form class="form" (ngSubmit)="confirmarVeracidad()">
+            <label>¿Cuál es su lugar favorito para viajar?</label>
+            <input required class="input" type="text" name="pregunta" id="pregunta" placeholder="Responda"
+                [(ngModel)]="preguntaEscrita" />
+            <button type="submit" class="login-button">Confirmar</button>
+        </form>
+    </div>
+
+    <!-- Paso 3: Actualizar contraseña -->
+    <div *ngIf="mostrarActualizar">
+        <form class="form" (ngSubmit)="actualizarcontrasenia()">
+            <input required class="input" type="password" name="nuevaPassword" id="nuevaPassword"
+                placeholder="Nueva Contraseña" [(ngModel)]="nuevaPassword" />
+            <input required class="input" type="password" name="repetirContrasenia" id="repetirContrasenia"
+                placeholder="Repita su contraseña" [(ngModel)]="repetirContrasenia" />
+            <button class="login-button" type="submit">Actualizar</button>
+        </form>
+    </div>
+</div>

@@ -23,6 +23,7 @@ import { CrearPagoComponent } from '../paginas/crear-pago/crear-pago.component';
 import { ListaComprasComponent } from '../paginas/lista-compras/lista-compras.component';
 import { RegistrarseComponent } from '../paginas/registrarse/registrarse.component';
 import { PerfilComponent } from '../paginas/perfil/perfil.component';
+import { ActualizarContraseniaComponent } from '../paginas/actualizar-contrasenia/actualizar-contrasenia.component';
 
 export const routes: Routes = [
     { path: 'sobrenosotros', component: HomeComponent },
@@ -49,5 +50,6 @@ export const routes: Routes = [
     { path: 'crearPago', component: CrearPagoComponent },
     { path: 'lista-pagos', component: ListaComprasComponent },
     { path: 'registrarse', component: RegistrarseComponent },
-    { path: 'perfil', component: PerfilComponent }
+    { path: 'perfil', component: PerfilComponent },
+    { path: 'actualizarContrasenia', component: ActualizarContraseniaComponent }
 ];

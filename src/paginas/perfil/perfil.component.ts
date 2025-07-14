@@ -13,7 +13,23 @@ import { CommonModule } from '@angular/common';
   styleUrl: './perfil.component.css'
 })
 export class PerfilComponent implements OnInit {
-  usuario?: Usuario;
+  usuario = {
+    secuencial: 0,
+    nombre: '',
+    apellido: '',
+    cedula: '',
+    telefono: '',
+    username: '',
+    password: '',
+    pregunta: '',
+    estaActivo: 1,
+    tipoUsuario: {
+      secuencial: 0,
+      nombre: '',
+      estado: true,
+    }
+  };
+
 
   constructor(private usuarioService: UsuarioService, private authService: AuthService) { }
 
