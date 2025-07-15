@@ -98,3 +98,42 @@
 .btn-reordenar:hover {
     background-color: #0069d9;
 }
+
+.contenedor-historial {
+    padding: 1rem;
+    max-width: 900px;
+    margin: auto;
+}
+
+.tabla-pedidos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+.tabla-pedidos th,
+.tabla-pedidos td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.tabla-pedidos th {
+    background-color: #3f51b5;
+    color: white;
+}
+
+.btn-eliminar {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-eliminar:hover {
+    background-color: #c0392b;
+}

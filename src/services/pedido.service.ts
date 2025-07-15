@@ -31,4 +31,7 @@ export class PedidoService {
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  obtenerPedidosPorUsuario(usuarioId: number): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}/usuario/${usuarioId}`);
+  }
 }

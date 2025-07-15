@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CarritoService } from '../../services/carrito.service';
-import { Carrito } from '../../models/Carrito';
 import { CommonModule } from '@angular/common';
+import { PedidoService } from '../../services/pedido.service';
+import { Pedido } from '../../models/Pedido';
 
 @Component({
   selector: 'app-historial-carrito',
@@ -11,40 +11,35 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./historial-carrito.component.css']
 })
 export class HistorialCarritoComponent implements OnInit {
-  historial: Carrito[] = [];
+  historial: Pedido[] = [];
 
-  constructor(private carritoService: CarritoService) { }
+  constructor(private pedidoService: PedidoService) { }
 
   ngOnInit(): void {
-    const usuarioId = 1;
-    this.carritoService.obtenerHistorialPorUsuario(usuarioId).subscribe({
-      next: (data) => {
+    const usuarioId = 1; // Idealmente: this.authService.getUserId()
+    this.pedidoService.obtenerPedidosPorUsuario(usuarioId).subscribe({
+      next: (data: Pedido[]) => {
         this.historial = data;
-        console.log('Historial cargado', data);
+        console.log('Pedidos cargados', data);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al cargar historial', err);
       }
     });
   }
 
-  calcularTotal(carrito: Carrito): number {
-    return carrito.productos?.reduce(
-      (acc, p) => acc + (p.producto?.precio || 0) * (p.cantidad || 1),
-      0
-    ) || 0;
-  }
-  eliminarCarrito(id: number) {
-    if (confirm('¿Estás seguro de eliminar este carrito?')) {
-      this.carritoService.eliminar(id).subscribe({
+  eliminarPedido(id: number | undefined) {
+    if (!id) return;
+
+    if (confirm('¿Estás seguro de eliminar este pedido?')) {
+      this.pedidoService.eliminar(id).subscribe({
         next: () => {
-          // ✅ Aquí corregido el filtro
-          this.historial = this.historial.filter(c => c.id !== id);
-          alert('✅ Compra eliminada');
+          this.historial = this.historial.filter(p => p.id !== id);
+          alert('✅ Pedido eliminado');
         },
-        error: (err) => {
-          console.error('Error al eliminar carrito', err);
-          alert('❌ No se pudo eliminar el carrito');
+        error: (err: any) => {
+          console.error('Error al eliminar pedido', err);
+          alert('❌ No se pudo eliminar el pedido');
         }
       });
     }

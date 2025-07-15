@@ -2,7 +2,7 @@ import { Usuario } from "./Usuario";
 
 export interface Pedido {
     id?: number;
-    usuario: Usuario; // o mejor: Usuario si tienes el modelo
+    usuario: Usuario;
     total: number;
     estado: string;
     fechaPedido: Date;

@@ -1,38 +1,34 @@
 <div class="contenedor-historial">
-    <h2>🧾 Historial de Compras</h2>
+    <h2>🧾 Historial de Pedidos</h2>
 
-    <!-- Mensaje si no hay historial -->
+    <!-- Si no hay historial -->
     <div *ngIf="!historial || historial.length === 0">
-        <p>No hay compras registradas.</p>
+        <p>No hay pedidos registrados.</p>
     </div>
 
-    <!-- Listado de carritos -->
-    <div *ngFor="let carrito of historial" class="card-compra">
-        <div class="card-header">
-            <span class="fecha">
-                📅 {{ carrito.fechaCreacion | date: 'mediumDate' }}
-            </span>
-            <span class="total">
-                💰 Total:
-                <ng-container *ngIf="calcularTotal(carrito) > 0">
-                    ${{ calcularTotal(carrito) | number: '1.2-2' }}
-                </ng-container>
-                <ng-container *ngIf="calcularTotal(carrito) === 0">
-                    (no disponible)
-                </ng-container>
-            </span>
-        </div>
-
-        <!-- Productos del carrito 
-        <ul class="lista-productos">
-            <li *ngFor="let p of carrito.productos">
-                🛒 {{ p.producto.nombre }} - {{ p.cantidad }} x ${{ p.producto.precio | number: '1.2-2' }}
-            </li>
-        </ul>-->
-
-        <!-- Botón de eliminación 
-        <button (click)="eliminarCarrito(carrito.id)" class="btn-eliminar">
-            🗑️ Eliminar esta compra
-        </button>-->
-    </div>
+    <!-- Tabla de pedidos -->
+    <table *ngIf="historial && historial.length > 0" class="tabla-pedidos">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pedido of historial; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ pedido.fechaPedido | date: 'mediumDate' }}</td>
+                <td>{{ pedido.estado }}</td>
+                <td>${{ pedido.total | number: '1.2-2' }}</td>
+                <td>
+                    <button (click)="eliminarPedido(pedido.id)" class="btn-eliminar">
+                        🗑️ Eliminar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

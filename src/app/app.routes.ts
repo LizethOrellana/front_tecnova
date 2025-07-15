@@ -46,7 +46,7 @@ export const routes: Routes = [
     { path: 'lista-usuarios', component: ListarUsuariosComponent, canActivate: [authGuard], data: { niveles: [1] } },
     { path: 'menus', component: MenusComponent, canActivate: [authGuard], data: { niveles: [1] } },
     { path: 'actualizarFooter', component: ActualizarFooterComponent, canActivate: [authGuard], data: { niveles: [1] } },
-    { path: 'historial', component: HistorialCarritoComponent, canActivate: [authGuard], data: { niveles: [1] } },
+    { path: 'historial', component: HistorialCarritoComponent, canActivate: [authGuard], data: { niveles: [1, 2] } },
     { path: 'lista-pagos', component: ListaComprasComponent, canActivate: [authGuard], data: { niveles: [1] } },
     { path: 'actualizarContrasenia', component: ActualizarContraseniaComponent, canActivate: [authGuard], data: { niveles: [1] } },
 
