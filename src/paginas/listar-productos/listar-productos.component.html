@@ -21,6 +21,8 @@
           <th>ID</th>
           <th>Nombre</th>
           <th>Precio</th>
+          <th>Stock</th>
+          <th>URL</th>
           <th>Categoría</th>
           <th>Marcas</th>
           <th>Acciones</th>
@@ -50,10 +52,30 @@
             </ng-template>
           </td>
 
+          <!-- Stock -->
+          <td>
+            <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarStock">
+              <input type="number" [(ngModel)]="productoEditando.stock" />
+            </ng-container>
+            <ng-template #mostrarStock>
+              <span>{{ producto.stock}}</span>
+            </ng-template>
+          </td>
+
+          <!-- URL -->
+          <td>
+            <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarURL">
+              <input type="text" [(ngModel)]="productoEditando.imagenUrl" />
+            </ng-container>
+            <ng-template #mostrarURL>
+              <span>{{ producto.imagenUrl}}</span>
+            </ng-template>
+          </td>
+
+
           <!-- Categoría -->
           <td>
             <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarCategoria">
-              <label for="categoria_id">Categoría</label>
               <select id="categoria_id" name="categoria_id" [(ngModel)]="productoEditando.categoria" required>
                 <option value="" disabled>Seleccione una categoría</option>
                 <option *ngFor="let categoria of categorias" [ngValue]="categoria">
@@ -68,7 +90,6 @@
 
           <td>
             <ng-container *ngIf="productoEditando && productoEditando.id === producto.id; else mostrarMarca">
-              <label for="marca_id">Marcas</label>
               <select id="marca_id" name="marca_id" [(ngModel)]="productoEditando.marca" required>
                 <option value="" disabled>Seleccione una marca</option>
                 <option *ngFor="let marca of marcas" [ngValue]="marca">

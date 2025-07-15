@@ -35,4 +35,10 @@ export class ProductoServiceService {
   buscarPorNombre(nombre: string): Observable<Producto[]> {
     return this.http.get<Producto[]>(`${this.urlApiProductos}/buscar?nombre=${encodeURIComponent(nombre)}`);
   }
+
+  // Método para disminuir stock
+  disminuirStock(id: number, cantidad: number): Observable<Producto> {
+    return this.http.put<Producto>(`${this.urlApiProductos}/${id}/disminuirStock?cantidad=${cantidad}`, {});
+  }
+
 }

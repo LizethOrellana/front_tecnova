@@ -9,6 +9,7 @@ import { Carrito } from '../../models/Carrito';
 import { Producto } from '../../models/Producto';
 import { Router } from '@angular/router';
 import { CarritoService } from '../../services/carrito.service';
+import { ProductoServiceService } from '../../services/producto.service';
 
 @Component({
   selector: 'app-crear-pago',
@@ -48,7 +49,7 @@ export class CrearPagoComponent implements OnInit {
 
   errorMessage: boolean = false;
 
-  constructor(private carritoService: CarritoService, private router: Router, private pagoService: PagoService, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(private productoService: ProductoServiceService, private carritoService: CarritoService, private router: Router, private pagoService: PagoService, private authService: AuthService, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -97,8 +98,28 @@ export class CrearPagoComponent implements OnInit {
                 alert('❌ Ocurrió un error al finalizar la compra');
               }
             });
+            for (const item of this.carrito.productos) {
+              const id = item.producto?.id; // Aquí accedes al producto anidado
+              const cantidadARestar = item.cantidad;
+
+              if (id !== undefined) {
+                this.productoService.disminuirStock(id, cantidadARestar).subscribe({
+                  next: (productoActualizado) => {
+                    console.log(`✅ Stock actualizado para producto ${id}:`, productoActualizado.stock);
+                    this.router.navigate(['/'])
+                  },
+                  error: (err) => {
+                    console.error(`❌ Error al disminuir stock del producto ${id}`, err);
+                  }
+                });
+              } else {
+                console.warn("❗ Producto no tiene ID válido:", item);
+              }
+            }
+
+
           }
-          this.router.navigate(['/']);
+
         });
       console.log('Pago a guardar:', this.pago);
     }
