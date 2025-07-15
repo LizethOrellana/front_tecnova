@@ -1,34 +1,53 @@
-<div class="contenedor-historial">
-    <h2>🧾 Historial de Pedidos</h2>
+<div class="container">
+    <h1>🧾 Historial de Pedidos</h1>
 
     <!-- Si no hay historial -->
     <div *ngIf="!historial || historial.length === 0">
         <p>No hay pedidos registrados.</p>
     </div>
+    <div class="tabla-container">
+        <!-- Tabla de pedidos paginados -->
+        <table *ngIf="historial && historial.length > 0" class="tabla">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pedido of categoriasPaginados; let i = index">
+                    <td>{{ (paginaActual - 1) * categoriasPorPagina + i + 1 }}</td>
+                    <td>{{ pedido.fechaPedido | date: 'mediumDate' }}</td>
+                    <td>{{ pedido.estado }}</td>
+                    <td>${{ pedido.total | number: '1.2-2' }}</td>
+                    <td>
+                        <button (click)="eliminarPedido(pedido.id)" class="btn-eliminar">
+                            🗑️ Eliminar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <!-- Tabla de pedidos -->
-    <table *ngIf="historial && historial.length > 0" class="tabla-pedidos">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Total</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let pedido of historial; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td>{{ pedido.fechaPedido | date: 'mediumDate' }}</td>
-                <td>{{ pedido.estado }}</td>
-                <td>${{ pedido.total | number: '1.2-2' }}</td>
-                <td>
-                    <button (click)="eliminarPedido(pedido.id)" class="btn-eliminar">
-                        🗑️ Eliminar
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+
+        <!-- Controles de paginación -->
+        <div class="paginacion" *ngIf="totalPaginas > 1">
+            <button class="button-paginacion" (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
+                ↩️
+            </button>
+
+            <button class="button-paginacion" *ngFor="let pagina of [].constructor(totalPaginas); let i = index"
+                [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)">
+                {{ i + 1 }}
+            </button>
+
+            <button class="button-paginacion" (click)="cambiarPagina(paginaActual + 1)"
+                [disabled]="paginaActual === totalPaginas">
+                ↪️
+            </button>
+        </div>
+    </div>
 </div>

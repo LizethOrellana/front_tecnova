@@ -1,139 +1,190 @@
-/* Contenedor principal */
-.checkout-container {
-    max-width: 900px;
-    margin: 50px auto;
-    background: #fff;
-    padding: 40px 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.container {
+    width: 100%;
+    display: flex;
+    /* display: contents no funciona bien para centrar */
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 8%;
 }
 
-/* Título */
-.checkout-container h2 {
+h1 {
+    width: 100%;
     text-align: center;
-    font-size: 2rem;
-    color: #3f51b5;
-    /* el mismo morado-azulado de tu encabezado */
-    margin-bottom: 2rem;
-}
-
-/* Tarjeta de cada compra */
-.card-compra {
-    border: 1px solid #e5e5e5;
-    border-radius: 10px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.card-compra:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
-}
-
-/* Encabezado de la tarjeta (fecha y total) */
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    font-weight: 600;
-    color: #444;
-}
-
-.card-header .fecha {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.card-header .total {
-    color: #28a745;
-}
-
-/* Lista de productos comprados */
-.lista-productos {
-    list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 10px 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #5a63f6;
 }
 
-.lista-productos li {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px solid #f1f1f1;
-    font-size: 0.96rem;
-    color: #555;
-}
-
-.lista-productos li:last-child {
-    border-bottom: none;
-}
-
-/* Etiquetas de cantidad y precio */
-.badge {
-    background: #ff0072;
-    color: #fff;
-    border-radius: 12px;
-    padding: 2px 8px;
-    font-size: 0.75rem;
-    margin-left: 6px;
-}
-
-/* Botón para comprar de nuevo (opcional) */
-.btn-reordenar {
-    margin-top: 14px;
-    padding: 10px 18px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s ease;
-}
-
-.btn-reordenar:hover {
-    background-color: #0069d9;
-}
-
-.contenedor-historial {
-    padding: 1rem;
+.tabla-container {
+    margin: 20px auto;
+    width: 100%;
     max-width: 900px;
-    margin: auto;
+    /* limita ancho máximo para mejor lectura */
+    overflow-x: auto;
+    /* azul más suave que "blue" puro */
+    padding: 10px;
+    border-radius: 6px;
+    box-sizing: border-box;
 }
 
-.tabla-pedidos {
+table.tabla {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1rem;
-    background-color: #fff;
-    border: 1px solid #ccc;
+    margin: 0 auto;
+    background-color: white;
+    color: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
 
-.tabla-pedidos th,
-.tabla-pedidos td {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: center;
+table.tabla th,
+table.tabla td {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
 }
 
-.tabla-pedidos th {
-    background-color: #3f51b5;
+table.tabla th {
+    background-color: #5a63f6;
     color: white;
+    font-weight: bold;
 }
 
-.btn-eliminar {
-    background-color: #e74c3c;
-    color: white;
+table.tabla tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    margin: 0 5px 5px 0;
+    padding: 5px 12px;
     border: none;
-    padding: 5px 10px;
+    background-color: #f65a7b;
+    color: white;
     border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #a93951;
+}
+
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+
+
+
+.custom_input {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 80%;
+}
+
+.input {
+    font-size: 18px;
+    margin-left: 3%;
+    outline: none;
+    color: #000000;
+}
+
+.input:focus {
+    background: #f2f2f2;
+    border: 1px solid #5a7ec7;
+    border-radius: 10px;
+}
+
+.input::placeholder {
+    color: #dddddd;
+}
+
+.svg_icon {
+    position: absolute;
+    left: 10px;
+    fill: #4660dc;
+    width: 18px;
+    height: 18px;
+}
+
+.paginacion {
+    margin-left: 70%;
+    margin-top: 1%;
+}
+
+.button-paginacion {
+    background-color: transparent;
+    color: black;
+    font-size: 18px;
+}
+
+.button-paginacion:hover {
+    background-color: #c9bcbf;
+}
+
+.button-search {
+    background-color: transparent;
+    border: none;
     cursor: pointer;
 }
 
-.btn-eliminar:hover {
-    background-color: #c0392b;
+/* From Uiverse.io by Pradeepsaranbishnoi */
+.radio-button {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 10px;
+    position: relative;
+    align-items: center;
+    color: black;
+}
+
+.radio-button input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.radio {
+    position: relative;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    transform: translateZ(-25px);
+    transition: all 0.3s ease-in-out;
+    font-size: 10px;
+}
+
+.radio::before {
+    position: absolute;
+    content: '';
+    width: 10px;
+    height: 10px;
+    top: 5px;
+    left: 5px;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.radio-button input[type="radio"]:checked+.radio {
+    border-color: #f65a7b;
+    transform: translateZ(0px);
+}
+
+.radio-button input[type="radio"]:checked+.radio::before {
+    opacity: 1;
 }
