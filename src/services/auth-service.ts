@@ -42,10 +42,18 @@ export class AuthService {
   isAuthenticated(): boolean {
     if (!this.isBrowser()) return false;
     const token = localStorage.getItem('token');
-    const exp = localStorage.getItem('exp');
-    if (!token || !exp) return false;
-    return Date.now() < parseInt(exp, 10);
+    if (!token) return false;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (!payload.exp) return false;
+      const expMillis = payload.exp * 1000; // 'exp' está en segundos
+      return Date.now() < expMillis;
+    } catch {
+      return false;
+    }
   }
+
 
   authStatus(): Observable<boolean> {
     return this.loggedIn$.asObservable();

@@ -6,13 +6,14 @@ import { Empresa } from '../../models/Empresa';
 import { Banner } from '../../models/Banner';
 import { EmpresaService } from '../../services/empresa.service';
 import { BannerService } from '../../services/banner.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-banner',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './editar-banner.component.html',
-  styleUrl: './editar-banner.component.css'
+  styleUrls: ['./editar-banner.component.css']
 })
 export class EditarBannerComponent implements OnInit {
   empresa: Empresa = {
@@ -54,20 +55,37 @@ export class EditarBannerComponent implements OnInit {
     });
   }
 
-  crearBanner() {
+  async crearBanner() {
+    if (this.bannerNuevo.descripcion.trim() === "" || this.bannerNuevo.url.trim() === "") {
+      await Swal.fire({
+        icon: 'warning',
+        title: 'Llene todos los campos',
+        toast: true,
+        position: 'top-end',
+        timer: 2000,
+        showConfirmButton: false,
+        timerProgressBar: true
+      });
+      return;
+    }
+
     const nuevoBanner: Banner = {
       ...this.bannerNuevo,
       empresa: this.empresa
     };
-    if (this.bannerNuevo.descripcion == "" || this.bannerNuevo.url == "") {
-      alert("LLenar todos los campos")
-    } else {
 
-      this.bannerService.crear(nuevoBanner).subscribe(() => {
-        this.bannerNuevo = { url: '', descripcion: '', estaBanner: 1, empresa: this.empresa };
-        this.cargarBanners();
+    this.bannerService.crear(nuevoBanner).subscribe(() => {
+      this.bannerNuevo = { url: '', descripcion: '', estaBanner: 1, empresa: this.empresa };
+      this.cargarBanners();
+      Swal.fire({
+        icon: 'success',
+        title: 'Banner creado exitosamente',
+        timer: 1500,
+        showConfirmButton: false,
+        toast: true,
+        position: 'top-end'
       });
-    }
+    });
   }
 
   editarBanner(banner: Banner) {
@@ -84,13 +102,37 @@ export class EditarBannerComponent implements OnInit {
     this.bannerService.actualizar(this.bannerEditando.secuencial!, this.bannerEditando).subscribe(() => {
       this.bannerEditando = null;
       this.cargarBanners();
+      Swal.fire({
+        icon: 'success',
+        title: 'Banner actualizado',
+        timer: 1500,
+        showConfirmButton: false,
+        toast: true,
+        position: 'top-end'
+      });
     });
   }
 
-  eliminarBanner(id: number) {
-    if (confirm('¿Estás seguro de eliminar este banner?')) {
+  async eliminarBanner(id: number) {
+    const result = await Swal.fire({
+      title: '¿Estás seguro de eliminar este banner?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    });
+
+    if (result.isConfirmed) {
       this.bannerService.eliminar(id).subscribe(() => {
         this.cargarBanners();
+        Swal.fire({
+          icon: 'success',
+          title: 'Banner eliminado',
+          timer: 1500,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
       });
     }
   }

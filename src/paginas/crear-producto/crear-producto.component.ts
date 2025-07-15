@@ -8,6 +8,7 @@ import { CategoriaService } from '../../services/categoria.service';
 import { Categoria } from '../../models/Categoria';
 import { MarcaService } from '../../services/marca.service';
 import { Marca } from '../../models/Marca';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-producto',
@@ -20,8 +21,14 @@ export class CrearProductoComponent implements OnInit {
   categorias: Categoria[] = [];
   marcas: Marca[] = [];
 
+  constructor(
+    private marcaService: MarcaService,
+    private categoriaService: CategoriaService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private productoService: ProductoServiceService,
+    private router: Router
+  ) { }
 
-  constructor(private marcaService: MarcaService, private categoriaService: CategoriaService, @Inject(PLATFORM_ID) private platformId: Object, private productoService: ProductoServiceService, private router: Router) { }
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.obtenerCategorias();
@@ -43,26 +50,46 @@ export class CrearProductoComponent implements OnInit {
 
   guardarProducto() {
     if (
-      this.producto.nombre === "" || this.producto.precio == null || this.producto.stock == null ||
-      this.producto.descripcion === "" || this.producto.categoria == null || this.producto.marca == null
+      this.producto.nombre === "" ||
+      this.producto.precio == null ||
+      this.producto.stock == null ||
+      this.producto.descripcion === "" ||
+      this.producto.categoria == null ||
+      this.producto.marca == null
     ) {
-      alert("LLene todos los campos");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, llena todos los campos antes de guardar.'
+      });
       return;
     }
 
-    // 🕓 Fecha
     this.producto.fecha_creacion = new Date().toISOString().split('T')[0];
     console.log("Producto a crear:", this.producto);
 
     this.productoService.crear(this.producto).subscribe({
       next: () => {
-        console.log('Producto creado');
-        this.router.navigate(['/productos']);
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto creado',
+          text: 'El producto fue creado exitosamente',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          this.router.navigate(['/productos']);
+        });
       },
-      error: (error) => console.error('Error al guardar', error)
+      error: (error) => {
+        console.error('Error al guardar', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo guardar el producto, intenta nuevamente.'
+        });
+      }
     });
   }
-
 
   selectedFile: File | null = null;
 
@@ -71,7 +98,6 @@ export class CrearProductoComponent implements OnInit {
     if (file) {
       this.selectedFile = file;
 
-      // Opcional: crea una vista previa local
       const reader = new FileReader();
       reader.onload = () => {
         this.producto.imagenUrl = reader.result as string;

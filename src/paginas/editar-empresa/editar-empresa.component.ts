@@ -1,11 +1,10 @@
-
-// editar-empresa.component.ts
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { EmpresaService } from '../../services/empresa.service';
 import { Empresa } from '../../models/Empresa';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-empresa',
@@ -24,7 +23,6 @@ export class EditarEmpresaComponent implements OnInit {
     banners: [],
   };
 
-
   constructor(private router: Router, private empresaService: EmpresaService) { }
 
   ngOnInit(): void {
@@ -33,21 +31,39 @@ export class EditarEmpresaComponent implements OnInit {
     });
   }
 
-
-  guardarCambios() {
-    if (this.empresa.nombre == "" || this.empresa.mision == "" || this.empresa.vision == "" || this.empresa.logo == "") {
-      alert("Llene todos los campos")
-    } else {
-      this.empresaService.guardar(this.empresa).subscribe({
-        next: (respuesta) => {
-          alert('Empresa actualizada correctamente recargue la página para reflejar los cambios');
-          this.router.navigate(['/productos']); // Redirige a la página principal o donde desees// Recargar la página para reflejar los cambios
-          // Puedes mostrar un mensaje de éxito o redireccionar
-        },
-        error: (error) => {
-          console.error('Error al actualizar empresa', error);
-        }
+  async guardarCambios() {
+    if (this.empresa.nombre.trim() === "" || this.empresa.mision.trim() === "" || this.empresa.vision.trim() === "" || this.empresa.logo.trim() === "") {
+      await Swal.fire({
+        icon: 'warning',
+        title: 'Llene todos los campos',
+        toast: true,
+        position: 'top-end',
+        timer: 2000,
+        showConfirmButton: false,
+        timerProgressBar: true
       });
+      return;
     }
+
+    this.empresaService.guardar(this.empresa).subscribe({
+      next: async (respuesta) => {
+        await Swal.fire({
+          icon: 'success',
+          title: 'Empresa actualizada correctamente',
+          text: 'Recargue la página para reflejar los cambios',
+          confirmButtonText: 'OK'
+        });
+        this.router.navigate(['/productos']);
+      },
+      error: async (error) => {
+        console.error('Error al actualizar empresa', error);
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar la empresa',
+          confirmButtonText: 'Cerrar'
+        });
+      }
+    });
   }
 }

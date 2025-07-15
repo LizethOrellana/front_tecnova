@@ -2,23 +2,22 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Producto } from '../../models/Producto';
 import { ProductoServiceService } from '../../services/producto.service';
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CategoriaService } from '../../services/categoria.service';
 import { Categoria } from '../../models/Categoria';
 import { MarcaService } from '../../services/marca.service';
 import { Marca } from '../../models/Marca';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-listar-productos',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './listar-productos.component.html',
-  styleUrl: './listar-productos.component.css'
+  styleUrls: ['./listar-productos.component.css']  // Corregido
 })
-export class ListarProductosComponent {
+export class ListarProductosComponent implements OnInit {
   productos: Producto[] = [];
   categorias: Categoria[] = [];
   marcas: Marca[] = [];
@@ -28,9 +27,12 @@ export class ListarProductosComponent {
   buscarTabla: Boolean = false;
   datosListos = false;
 
-
-
-  constructor(private marcaService: MarcaService, private categoriaService: CategoriaService, private productoService: ProductoServiceService, private router: Router) { }
+  constructor(
+    private marcaService: MarcaService,
+    private categoriaService: CategoriaService,
+    private productoService: ProductoServiceService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.datosListos = false;
@@ -50,7 +52,10 @@ export class ListarProductosComponent {
           this.productos = data;
           resolve();
         },
-        error: reject
+        error: (err) => {
+          Swal.fire('Error', 'No se pudieron cargar los productos', 'error');
+          reject(err);
+        }
       });
     });
   }
@@ -62,7 +67,10 @@ export class ListarProductosComponent {
           this.categorias = data;
           resolve();
         },
-        error: reject
+        error: (err) => {
+          Swal.fire('Error', 'No se pudieron cargar las categorías', 'error');
+          reject(err);
+        }
       });
     });
   }
@@ -74,11 +82,13 @@ export class ListarProductosComponent {
           this.marcas = data;
           resolve();
         },
-        error: reject
+        error: (err) => {
+          Swal.fire('Error', 'No se pudieron cargar las marcas', 'error');
+          reject(err);
+        }
       });
     });
   }
-
 
   editarProducto(producto: Producto): void {
     this.productoEditando = { ...producto }; // Clonamos para no modificar directamente
@@ -89,6 +99,16 @@ export class ListarProductosComponent {
       this.productoService.actualizar(this.productoEditando.id, this.productoEditando).subscribe(() => {
         this.productoEditando = null;
         this.cargarProductosPromise();
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto actualizado',
+          toast: true,
+          position: 'top-end',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }, error => {
+        Swal.fire('Error', 'No se pudo actualizar el producto', 'error');
       });
     }
   }
@@ -97,16 +117,36 @@ export class ListarProductosComponent {
     this.productoEditando = null;
   }
 
-  eliminarProducto(id: number): void {
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
-      this.productoService.eliminar(id).subscribe(() => this.cargarProductosPromise());
+  async eliminarProducto(id: number): Promise<void> {
+    const result = await Swal.fire({
+      title: '¿Estás seguro de eliminar este producto?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+      this.productoService.eliminar(id).subscribe(() => {
+        this.cargarProductosPromise();
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto eliminado',
+          toast: true,
+          position: 'top-end',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }, error => {
+        Swal.fire('Error', 'No se pudo eliminar el producto', 'error');
+      });
     }
   }
 
   crearProducto() {
     this.router.navigate(['/crearProducto']);
   }
-
 
   productosPorPagina = 10;
   paginaActual = 1;
@@ -127,17 +167,17 @@ export class ListarProductosComponent {
   }
 
   buscarProductos(): void {
-    console.log("Buscando..")
     if (!this.nombreBusqueda.trim()) {
-      this.cargarProductosPromise(); // recarga todo si está vacío
+      this.cargarProductosPromise();
       return;
     }
 
     this.productoService.buscarPorNombre(this.nombreBusqueda).subscribe({
       next: (res) => this.productos = res,
-      error: (err) => console.error('Error al buscar productos:', err)
+      error: (err) => Swal.fire('Error', 'No se pudo buscar productos', 'error')
     });
   }
+
   obtenerNombreMarca(id?: number): string {
     const idNum = Number(id);
     const marca = this.marcas.find(m => Number(m.id) === idNum);
@@ -149,8 +189,4 @@ export class ListarProductosComponent {
     const categoria = this.categorias.find(c => Number(c.id) === idNum);
     return categoria ? categoria.nombre : 'Sin categoría';
   }
-
-
-
-
 }

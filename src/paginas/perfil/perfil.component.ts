@@ -4,16 +4,17 @@ import { Usuario } from '../../models/Usuario';
 import { AuthService } from '../../services/auth-service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './perfil.component.html',
-  styleUrl: './perfil.component.css'
+  styleUrl: './perfil.component.css',
 })
 export class PerfilComponent implements OnInit {
-  usuario = {
+  usuario: Usuario = {
     secuencial: 0,
     nombre: '',
     apellido: '',
@@ -30,7 +31,6 @@ export class PerfilComponent implements OnInit {
     }
   };
 
-
   constructor(private usuarioService: UsuarioService, private authService: AuthService) { }
 
   ngOnInit(): void {
@@ -39,35 +39,43 @@ export class PerfilComponent implements OnInit {
 
   guardarUsuario() {
     const nivelAcceso = this.authService.getNivelAcceso();
-    if (this.usuario) {
-      if (nivelAcceso === 1) {
-        this.usuario.tipoUsuario = {
-          secuencial: 1,
-          nombre: 'Admin',
-          estado: true
-        };
-      } else if (nivelAcceso === 2) {
-        this.usuario.tipoUsuario = {
-          secuencial: 2,
-          nombre: 'Usuario',
-          estado: true
-        };
-      } else {
-        // Opcional: tipoUsuario por defecto o error
-        alert('Nivel de acceso no válido');
-        return;
-      }
-
-      this.usuarioService.actualizar(this.usuario.secuencial, this.usuario).subscribe({
-        next: () => alert('Perfil actualizado correctamente'),
-        error: (err) => {
-          console.error('Error al actualizar el perfil', err);
-          alert('Error al actualizar el perfil');
-        }
-      });
-    } else {
-      alert('No hay usuario para actualizar');
+    if (!this.usuario) {
+      Swal.fire('Error', 'No hay usuario para actualizar', 'error');
+      return;
     }
-  }
 
+    if (nivelAcceso === 1) {
+      this.usuario.tipoUsuario = {
+        secuencial: 1,
+        nombre: 'Admin',
+        estado: true
+      };
+    } else if (nivelAcceso === 2) {
+      this.usuario.tipoUsuario = {
+        secuencial: 2,
+        nombre: 'Usuario',
+        estado: true
+      };
+    } else {
+      Swal.fire('Acceso inválido', 'Nivel de acceso no válido', 'warning');
+      return;
+    }
+
+    this.usuarioService.actualizar(this.usuario.secuencial, this.usuario).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Perfil actualizado correctamente',
+          toast: true,
+          position: 'top-end',
+          timer: 2000,
+          showConfirmButton: false
+        });
+      },
+      error: (err) => {
+        console.error('Error al actualizar el perfil', err);
+        Swal.fire('Error', 'No se pudo actualizar el perfil', 'error');
+      }
+    });
+  }
 }

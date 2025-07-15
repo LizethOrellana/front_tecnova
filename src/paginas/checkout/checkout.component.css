@@ -6,13 +6,14 @@
     border-radius: 12px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 1px solid #f65a7b
 }
 
 .checkout-container h2 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     text-align: center;
-    color: #3f51b5;
+    color: #f65a7b;
 }
 
 .producto-checkout {
@@ -40,7 +41,7 @@
     margin-top: 30px;
     width: 100%;
     padding: 14px;
-    background-color: #FF0072;
+    background-color: #f65a7b;
     color: white;
     font-weight: bold;
     font-size: 1rem;
@@ -52,4 +53,85 @@
 
 .btn-confirmar:hover {
     background-color: #e60065;
+}
+
+table.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background-color: white;
+    color: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+table.tabla th,
+table.tabla td {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table.tabla th {
+    background-color: #5a63f6;
+    color: white;
+    font-weight: bold;
+}
+
+table.tabla tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.total-compra {
+    font-weight: bold;
+    font-size: larger;
+    margin-top: 3%;
+    text-align: right;
+}
+
+.imagen-mini {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.mensaje-final {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff4f8;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.total-detalle {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #444;
+}
+
+.total-detalle hr {
+    margin: 8px 0;
+}
+
+.container-volver {
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+.volver {
+    background-color: #f65a7b;
+    padding: auto;
+    font-size: 16px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 50px;
+    padding: 5px 10px;
+}
+
+.volver:hover {
+    background-color: #5a63f6;
 }

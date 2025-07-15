@@ -4,19 +4,19 @@ import { MarcaService } from '../../services/marca.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lista-marcas',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './lista-marcas.component.html',
-  styleUrl: './lista-marcas.component.css'
+  styleUrls: ['./lista-marcas.component.css']  // corregido aquí
 })
 export class ListaMarcasComponent {
   marcas: Marca[] = [];
   marcaEditada: Marca | null = null;
   nombreBusqueda: string = '';
-
 
   constructor(private marcaService: MarcaService, private router: Router) { }
 
@@ -45,16 +45,37 @@ export class ListaMarcasComponent {
     this.marcaEditada = null;
   }
 
-  eliminarMarca(id: number): void {
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
-      this.marcaService.eliminar(id).subscribe(() => this.cargarMarcas());
+  async eliminarMarca(id: number) {
+    const result = await Swal.fire({
+      title: '¿Estás seguro de eliminar este producto?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+    });
+
+    if (result.isConfirmed) {
+      this.marcaService.eliminar(id).subscribe(() => {
+        this.cargarMarcas();
+        Swal.fire({
+          icon: 'success',
+          title: 'Eliminado',
+          text: 'El producto fue eliminado correctamente',
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
+      }, (error) => {
+        Swal.fire('Error', 'No se pudo eliminar el producto', 'error');
+      });
     }
   }
 
   crearMarca() {
     this.router.navigate(['/crearMarca']);
   }
-
 
   marcasPorPagina = 10;
   paginaActual = 1;
@@ -75,9 +96,9 @@ export class ListaMarcasComponent {
   }
 
   buscarMarcas(): void {
-    console.log("Buscando..")
+    console.log("Buscando..");
     if (!this.nombreBusqueda.trim()) {
-      this.cargarMarcas(); // recarga todo si está vacío
+      this.cargarMarcas();
       return;
     }
 

@@ -1,16 +1,21 @@
 <header class="menu-header">
     <nav>
-
         <ul class="menu-list">
-            <li *ngIf="nivelUsuario === 0 || nivelUsuario ===2" style="width:90%;">
+
+            <!-- Logo y nombre de empresa -->
+            <li class="empresa-header" *ngIf="nivelUsuario === 0 || nivelUsuario === 2">
                 <a routerLink="/" class="empresa-link">
-                    <img [src]="empresa.logo" alt="Logo" width="30" />
+                    <img [src]="empresa.logo" alt="Logo" />
                     <span>{{ empresa.nombre }}</span>
                 </a>
-                <a routerLink="/contactos" style="margin-left: 10%;">Contactanos</a>
             </li>
 
+            <!-- Contacto -->
+            <li *ngIf="nivelUsuario === 0 || nivelUsuario === 2">
+                <a routerLink="/contactos">Contáctanos</a>
+            </li>
 
+            <!-- Menús dinámicos -->
             <ng-container *ngFor="let item of menus">
                 <li *ngIf="nivelUsuario != null && item.nivel_acceso != null && nivelUsuario >= item.nivel_acceso">
                     <a [routerLink]="item.ruta">
@@ -20,33 +25,44 @@
                 </li>
             </ng-container>
 
-            <li *ngIf="nivelUsuario === 2 || nivelUsuario === 1" style="width:90%;">
-                <a [routerLink]="'/perfil'" style="display: flex; align-items: center; text-decoration: none;">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/fotos-8113a.appspot.com/o/usuario.png?alt=media&token=fba15dde-b31e-46be-8a7d-56da653fa585"
-                        alt="Perfil" style="width: 40px; height: 40px; cursor: pointer;" />
-                </a>
-            </li>
+            <!-- Grupo alineado a la derecha -->
+            <div class="menu-usuario">
 
-            <div class="config-menu-container" *ngIf="nivelUsuario === 1" (mouseleave)="mostrarMenu = false">
-                <img src="https://firebasestorage.googleapis.com/v0/b/fotos-8113a.appspot.com/o/configuraciones.png?alt=media&token=e1cbe303-d793-4378-b050-40a7ecabb76c"
-                    alt="Configuración" class="config-icon" (mouseenter)="mostrarMenu = true" (click)="toggleMenu()" />
 
-                <div class="config-dropdown" *ngIf="mostrarMenu">
-                    <ul>
-                        <li><a routerLink="/editarEmpresa">Editar Empresa</a></li>
-                        <li><a routerLink="/editarBanner">Editar Banner</a></li>
-                        <li><a routerLink="/actualizarFooter">Editar Footer</a></li>
-                        <li><a routerLink="/menus">Menus</a></li>
-                        <li><button (click)="logout()">Cerrar sesión</button></li>
-                    </ul>
+
+                <!-- Configuración -->
+                <div *ngIf="nivelUsuario === 1" class="config-menu-container" (mouseleave)="mostrarMenu = false">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/fotos-8113a.appspot.com/o/ajustes.png?alt=media&token=f231a537-9349-4144-9c15-59fabd2ddf14"
+                        alt="Configuración" class="config-icon" (mouseenter)="mostrarMenu = true" (click)="toggleMenu()"
+                        width="40px" height="40px" />
+
+                    <div class="config-dropdown" *ngIf="mostrarMenu">
+                        <ul class="sub-menus">
+                            <li><a routerLink="/editarEmpresa">Editar Empresa</a></li>
+                            <li><a routerLink="/editarBanner">Editar Banner</a></li>
+                            <li><a routerLink="/actualizarFooter">Editar Footer</a></li>
+                            <li><a routerLink="/menus">Menus</a></li>
+                            <li><button class="btn-user" (click)="logout()">Cerrar sesión</button></li>
+                        </ul>
+                    </div>
                 </div>
+                <!-- Perfil -->
+                <a *ngIf="nivelUsuario === 1 || nivelUsuario === 2" [routerLink]="'/perfil'" class="perfil-link">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/fotos-8113a.appspot.com/o/usuario%20(2).png?alt=media&token=9005a8c0-55e6-402b-90ed-0c6c931d3eec"
+                        alt="Perfil" />
+                </a>
+
+                <!-- Iniciar sesión -->
+                <button *ngIf="nivelUsuario === 0" class="btn-user" routerLink="/login">
+                    Iniciar sesión
+                </button>
+
+                <!-- Cerrar sesión -->
+                <button *ngIf="nivelUsuario === 2" class="btn-user" (click)="logout()">
+                    Cerrar sesión
+                </button>
+
             </div>
-
-            <li *ngIf="nivelUsuario === 0" style="width:90%;">
-                <a routerLink="/login" style="margin-left: 3%;">Iniciar sesión</a>
-            </li>
-
-            <li *ngIf="nivelUsuario ===2"><button (click)="logout()">Cerrar sesión</button></li>
 
         </ul>
     </nav>

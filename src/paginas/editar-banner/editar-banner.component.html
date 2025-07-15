@@ -6,6 +6,7 @@
         <thead>
           <tr>
             <th>ID</th>
+            <th>Imagen</th>
             <th>URL</th>
             <th>Descripción</th>
             <th>Estado</th>
@@ -15,11 +16,12 @@
         <tbody>
           <tr *ngFor="let banner of banners">
             <td>{{ banner.secuencial }}</td>
+            <td><img src="{{banner.url}}" width="60px" height="30px"></td>
 
             <!-- URL -->
             <td>
               <ng-container *ngIf="bannerEditando?.secuencial === banner.secuencial; else verUrl">
-                <input [(ngModel)]="bannerEditando!.url" />
+                <textarea [(ngModel)]="bannerEditando!.url"></textarea>
               </ng-container>
               <ng-template #verUrl>
                 <a [href]="banner.url" target="_blank">{{ banner.url }}</a>
@@ -71,7 +73,7 @@
           ↩️
         </button>
 
-        <button class="button-paginacion" *ngFor="let pagina of [].constructor(totalPaginas); let i = index"
+        <button *ngFor="let pagina of [].constructor(totalPaginas); let i = index"
           [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)">
           {{ i + 1 }}
         </button>
@@ -82,17 +84,20 @@
       </div>
     </div>
   </div>
-  <div class="container-menus">
+  <div class="container-menus1">
     <div class="heading">Crear una nuevo Banner</div>
+    <div class="logo">
+      <img *ngIf="bannerNuevo.url!=''" src="{{bannerNuevo.url}}" width="400px" height="200px">
+    </div>
     <form class="form" (ngSubmit)="crearBanner()">
-      <input required [(ngModel)]="bannerNuevo.url" name="url" placeholder="URL del banner" class="input" />
-      <input required [(ngModel)]="bannerNuevo.descripcion" class="input" name="descripcion" placeholder="Descripción"
-        class="input" />
+      <textarea required [(ngModel)]="bannerNuevo.url" name="url" placeholder="URL del banner" class="input"></textarea>
+      <textarea required [(ngModel)]="bannerNuevo.descripcion" class="input" name="descripcion"
+        placeholder="Descripción" class="input"></textarea>
       <select [(ngModel)]="bannerNuevo.estaBanner" name="estado">
         <option [value]="1">Activo</option>
         <option [value]="0">Inactivo</option>
       </select>
-      <input class="login-button" type="submit" value="Crear" />
+      <button class="login-button" style="margin-top: 3%; font-size: large;" type="submit">Crear</button>
     </form>
   </div>
 </div>

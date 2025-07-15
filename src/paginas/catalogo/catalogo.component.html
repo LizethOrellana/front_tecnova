@@ -3,17 +3,18 @@
     <p>Calidad, precio y tecnología al alcance de un clic</p>
 </div>
 
+<!-- Botón flotante para abrir carrito -->
 <button class="btn-open-cart" (click)="mostrarCarrito = !mostrarCarrito">
     🛒 Ver Carrito {{ carrito.productos.length }}
-
 </button>
 
+<!-- Carrito flotante -->
 <div class="carrito-flotante" [class.activo]="mostrarCarrito">
-    <h2>🛒 Tu carrito</h2>
+    <h2>🛒 Mi carrito</h2>
     <ul>
-        <li *ngFor="let item of carrito.productos">
+        <li>
             <div class="item-row">
-                <table class="table-carrito">
+                <table class="tabla">
                     <thead>
                         <tr>
                             <th>Producto</th>
@@ -23,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr *ngFor="let item of carrito.productos">
                             <td>{{ item.producto.nombre }}</td>
                             <td>
                                 <button class="btn-cantidad" (click)="disminuirCantidad(item.producto.id!)">-</button>
@@ -31,7 +32,9 @@
                                 <button class="btn-cantidad" (click)="incrementarCantidad(item.producto.id!)">+</button>
                             </td>
                             <td>{{ item.producto.precio * item.cantidad | currency:'USD' }}</td>
-                            <td><button (click)="eliminarDelCarrito(item.producto.id!)">✖</button></td>
+                            <td>
+                                <button class="btn-remove" (click)="eliminarDelCarrito(item.producto.id!)">✖</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -42,16 +45,14 @@
     <p class="total">Total: {{ total | currency:'USD' }}</p>
 
     <div class="acciones-carrito">
-        <button (click)="actualizarCarrito()">🔄 Actualizar carrito</button>
+        <button class="btn-actualizar" (click)="actualizarCarrito()">🔄 Actualizar carrito</button>
         <button class="btn-pagar" (click)="crearPedido()">💳 Hacer mi Pedido</button>
+        <!--<button class="btn-historial" (click)="verHistorial()">🧾 Ver historial de compras</button>-->
         <button class="cerrar" (click)="mostrarCarrito = false">Cerrar</button>
-        <button class="btn-historial" (click)="verHistorial()">🧾 Ver historial de compras</button>
     </div>
-
-
-
 </div>
 
+<!-- Productos -->
 <div class="grid-container">
     <div class="product-card" *ngFor="let producto of productos">
         <div class="product-image">

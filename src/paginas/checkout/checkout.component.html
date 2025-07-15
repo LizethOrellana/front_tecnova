@@ -1,33 +1,51 @@
+<div class="container-volver">
+    <button class="volver" (click)="volver()">⬅️ ¡Ups! Quiero añadir algo más 🤔</button>
+</div>
 <div class="checkout-container">
-    <h2>🧾 Resumen de tu compra</h2>
+    <h2>🧾 ¡Todo listo! Revisa tu pedido antes de pagar</h2>
 
-    <ul>
-        <table>
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let p of carrito">
-                    <td>{{ p.producto?.nombre }}</td>
-                    <td>{{ p.cantidad }}</td>
-                    <td>${{ p.producto?.precio }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </ul>
+    <div class="resumen-info">
+        <p>🛒 Productos en el pedido: {{ carrito.length }}</p>
+        <p>📅 Fecha de pedido: {{ fecha | date:'fullDate' }}</p>
+    </div>
+
+
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of carrito">
+                <td><img [src]="p.producto?.imagenUrl" alt="Imagen" class="imagen-mini"></td>
+                <td>{{ p.producto?.nombre }}</td>
+                <td>{{ p.cantidad }}</td>
+                <td>${{ p.producto?.precio }}</td>
+            </tr>
+        </tbody>
+    </table>
 
 
     <p *ngIf="carrito.length === 0">No hay productos en el carrito.</p>
 
-    <div class="total-compra">
-        <span>{{ total | currency:'USD' }}</span>
+    <div class="total-detalle">
+        <p>Subtotal: {{ total * 0.88 | currency:'USD' }}</p>
+        <p>IVA (12%): {{ total * 0.12 | currency:'USD' }}</p>
+        <hr>
+        <strong>Total: {{ total | currency:'USD' }}</strong>
     </div>
 
+
+    <div class="mensaje-final">
+        <p>🎉 ¡Ya casi es tuyo! Solo falta confirmar el pago.</p>
+    </div>
+
+
     <button (click)="confirmarCompra()" class="btn-confirmar">
-        ✅ confirmar pedio - Hacer el pago
+        💳 Finalizar compra y pagar
     </button>
 </div>

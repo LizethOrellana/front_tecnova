@@ -132,14 +132,14 @@
         </div>
     </div>
 
-    <div class="container-menus">
+    <div class="container-menus1">
         <div class="heading">Crear una nuevo Menu</div>
         <form class="form" (ngSubmit)="crearMenu()" #formProducto="ngForm">
             <input required="" class="input" type="text" name="nombre" id="nombre" placeholder="Nombre"
                 [(ngModel)]="menu.nombre">
             <input required="" class="input" type="text" name="ruta" id="ruta" placeholder="Ruta"
                 [(ngModel)]="menu.ruta">
-            <div class="radios">
+            <div class="radios" style="margin-top: 5%;">
                 <label class="label">Estado:
                 </label>
                 <label class="radio-button">
@@ -154,9 +154,9 @@
                     Inactivo
                 </label>
             </div>
-            <label style="margin-left: 2%;">Acceso: </label>
-            <select id="nivel_acceso" name="nivel_acceso" [(ngModel)]="menu.nivel_acceso" required>
-                <option value="">Seleccione cual es el nivel de acceso</option>
+            <label style="margin-left: 2%; margin-top: 3%; width: 100%;">Acceso: </label>
+            <select class="select" id="nivel_acceso" name="nivel_acceso" [(ngModel)]="menu.nivel_acceso" required>
+                <option value="" selected>Seleccione cual es el nivel de acceso</option>
                 <option [value]="0">
                     Publico
                 </option>
@@ -168,7 +168,8 @@
                 </option>
             </select>
 
-            <input class="login-button" type="submit" value="Crear">
+            <button class="login-button" style="width: 30%; margin-top: 5%; font-size: medium;"
+                type="submit">Crear</button>
 
         </form>
 

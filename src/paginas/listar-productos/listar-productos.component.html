@@ -19,6 +19,7 @@
       <thead>
         <tr>
           <th>ID</th>
+          <th>Imagen</th>
           <th>Nombre</th>
           <th>Precio</th>
           <th>Stock</th>
@@ -31,6 +32,8 @@
       <tbody *ngIf="datosListos">
         <tr *ngFor="let producto of productosPaginados">
           <td>{{ producto.id }}</td>
+
+          <td><img src="{{producto.imagenUrl}}" width="30px" height="30px"></td>
 
           <!-- Nombre -->
           <td>

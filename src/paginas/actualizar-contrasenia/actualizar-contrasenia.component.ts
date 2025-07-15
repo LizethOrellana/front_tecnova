@@ -3,7 +3,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { error } from 'console';
+import Swal from 'sweetalert2';  // <--- Importa SweetAlert2
 
 @Component({
   selector: 'app-actualizar-contrasenia',
@@ -24,9 +24,14 @@ export class ActualizarContraseniaComponent {
   mostrarActualizar: boolean = false;
 
   constructor(private router: Router, private usuarioService: UsuarioService) { }
+
   verificar() {
     if (!/^\d{10}$/.test(this.cedula)) {
-      alert('La cédula debe contener exactamente 10 dígitos numéricos');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'La cédula debe contener exactamente 10 dígitos numéricos'
+      });
       return;
     }
 
@@ -37,7 +42,11 @@ export class ActualizarContraseniaComponent {
         this.mostrarPregunta = true;
       },
       error: () => {
-        alert("❌ La cédula ingresada no está registrada.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'La cédula ingresada no está registrada.'
+        });
       }
     });
   }
@@ -47,32 +56,55 @@ export class ActualizarContraseniaComponent {
       this.mostrarPregunta = false;
       this.mostrarActualizar = true;
     } else {
-      alert("❌ Respuesta incorrecta. Intenta nuevamente.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Incorrecto',
+        text: 'Respuesta incorrecta. Intenta nuevamente.'
+      });
     }
   }
 
   actualizarcontrasenia() {
     if (!this.nuevaPassword || !this.repetirContrasenia) {
-      alert('Por favor, rellene ambos campos de contraseña.');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Atención',
+        text: 'Por favor, rellene ambos campos de contraseña.'
+      });
       return;
     }
     if (this.nuevaPassword !== this.repetirContrasenia) {
-      alert('Las contraseñas no coinciden.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Las contraseñas no coinciden.'
+      });
       return;
     }
 
     this.usuarioService.actualizarPassword(this.cedula, this.nuevaPassword).subscribe({
       next: (res) => {
-        alert('Contraseña actualizada correctamente');
-        this.router.navigate(['/login'])
-        // Aquí puedes redirigir o limpiar campos
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'Contraseña actualizada correctamente',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
+        this.router.navigate(['/login']);
       },
       error: (err) => {
-        alert('Error al actualizar la contraseña');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al actualizar la contraseña'
+        });
         console.error(err);
       }
     });
-
   }
 
   resetearFormulario() {

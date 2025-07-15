@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PedidoService } from '../../services/pedido.service';
 import { Pedido } from '../../models/Pedido';
 import { AuthService } from '../../services/auth-service';
-import { Console } from 'console';
+import Swal from 'sweetalert2';  // <-- Importa SweetAlert2
 
 @Component({
   selector: 'app-checkout',
@@ -20,6 +20,7 @@ import { Console } from 'console';
 export class CheckoutComponent implements OnInit {
   carrito: { producto: any; cantidad: number }[] = [];
   total: number = 0;
+  fecha: Date = new Date();
 
   constructor(
     private authService: AuthService,
@@ -56,7 +57,11 @@ export class CheckoutComponent implements OnInit {
     const usuario = this.authService.getUserData();
     console.log('Usuario autenticado:', usuario);
     if (!usuario) {
-      alert('Usuario no autenticado');
+      Swal.fire({
+        icon: 'error',
+        title: 'Usuario no autenticado',
+        text: 'Debes iniciar sesión para completar la compra'
+      });
       return;
     }
 
@@ -70,7 +75,15 @@ export class CheckoutComponent implements OnInit {
 
     this.pedidoService.crear(pedido).subscribe(
       (response) => {
-        alert('✅ Pedido registrado');
+        Swal.fire({
+          icon: 'success',
+          title: 'Pedido registrado',
+          text: 'Tu pedido fue registrado exitosamente',
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: 'top-end'
+        });
         console.log('Pedido registrado exitosamente:', response);
         this.router.navigate(['/crearPago']);
         localStorage.setItem('pedido', JSON.stringify(response));
@@ -78,8 +91,16 @@ export class CheckoutComponent implements OnInit {
       },
       (err) => {
         console.error('Error al registrar pedido:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo registrar el pedido. Intenta de nuevo.'
+        });
       }
     );
+  }
 
+  volver() {
+    this.router.navigate(['/']);
   }
 }

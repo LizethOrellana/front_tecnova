@@ -21,7 +21,7 @@ export class LoginService {
       this.http.post<any>(this.apiUrl, { username, password }).subscribe(
         res => {
           localStorage.setItem('token', res.token);
-          localStorage.setItem('exp', res.exp);
+          //localStorage.setItem('exp', res.exp);
           this.loggedIn$.next(true);
           observer.next(res);
           observer.complete();

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Marca } from '../../models/Marca';
 import { MarcaService } from '../../services/marca.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-marca',
@@ -22,17 +23,34 @@ export class CrearMarcaComponent {
   constructor(private marcaService: MarcaService, private router: Router) { }
 
   guardarMarca() {
-    if (this.marca.nombre == "" || this.marca.paisOrigen == "") {
-      alert("Llene todos los campos")
+    if (this.marca.nombre === "" || this.marca.paisOrigen === "") {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor, llene todos los campos antes de continuar.'
+      });
     } else {
       this.marcaService.crear(this.marca).subscribe({
         next: () => {
-          console.log('Marca creado');
+          Swal.fire({
+            icon: 'success',
+            title: 'Marca creada',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 2000
+          });
           this.router.navigate(['/lista-marcas']);
         },
-        error: (error) => console.error('Error al guardar', error)
+        error: (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo guardar la marca. Intente de nuevo.'
+          });
+          console.error('Error al guardar', error);
+        }
       });
     }
   }
-
 }

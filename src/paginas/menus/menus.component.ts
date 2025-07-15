@@ -4,6 +4,7 @@ import { MenuService } from '../../services/menu.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-menus',
@@ -23,7 +24,6 @@ export class MenusComponent {
     activo: false
   };
 
-
   constructor(private menuService: MenuService, private router: Router) { }
 
   ngOnInit(): void {
@@ -35,12 +35,13 @@ export class MenusComponent {
   }
 
   editarMenu(menu: Menu): void {
-    this.menuEditado = { ...menu }; // Clonamos para no modificar directamente
+    this.menuEditado = { ...menu };
   }
 
   guardarEdicion(): void {
     if (this.menuEditado && this.menuEditado.id) {
       this.menuService.actualizar(this.menuEditado.id, this.menuEditado).subscribe(() => {
+        Swal.fire('Editado', 'El menú fue actualizado correctamente', 'success');
         this.menuEditado = null;
         this.cargarMenus();
       });
@@ -52,20 +53,41 @@ export class MenusComponent {
   }
 
   eliminarMenu(id: number): void {
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
-      this.menuService.eliminar(id).subscribe(() => this.cargarMenus());
-    }
-  }
-
-  crearMenu() {
-    this.menuService.crear(this.menu).subscribe({
-      next: () => {
-        console.log('Menu creado');
-      },
-      error: (error) => console.error('Error al guardar', error)
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¡Esta acción eliminará el menú!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.menuService.eliminar(id).subscribe(() => {
+          Swal.fire('Eliminado', 'Menú eliminado correctamente', 'success');
+          this.cargarMenus();
+        });
+      }
     });
   }
 
+  crearMenu() {
+    if (!this.menu.nombre || !this.menu.ruta) {
+      Swal.fire('Campos requeridos', 'Debes llenar todos los campos', 'warning');
+      return;
+    }
+
+    this.menuService.crear(this.menu).subscribe({
+      next: () => {
+        Swal.fire('Creado', 'Menú creado exitosamente', 'success');
+        this.menu = { id: 0, nombre: '', ruta: '', activo: false };
+        this.cargarMenus();
+      },
+      error: (error) => {
+        console.error('Error al guardar', error);
+        Swal.fire('Error', 'No se pudo crear el menú', 'error');
+      }
+    });
+  }
 
   menusPorPagina = 10;
   paginaActual = 1;
@@ -86,15 +108,17 @@ export class MenusComponent {
   }
 
   buscarMenus(): void {
-    console.log("Buscando..")
     if (!this.nombreBusqueda.trim()) {
-      this.cargarMenus(); // recarga todo si está vacío
+      this.cargarMenus();
       return;
     }
 
     this.menuService.buscarPorNombre(this.nombreBusqueda).subscribe({
       next: (res) => this.menus = res,
-      error: (err) => console.error('Error al buscar menus:', err)
+      error: (err) => {
+        console.error('Error al buscar menus:', err);
+        Swal.fire('Error', 'No se pudieron cargar los menús', 'error');
+      }
     });
   }
 }

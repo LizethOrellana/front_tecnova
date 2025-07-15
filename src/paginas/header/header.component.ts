@@ -6,6 +6,7 @@ import { Menu } from '../../models/Menu';
 import { Router, RouterModule } from '@angular/router';
 import { Empresa } from '../../models/Empresa';
 import { EmpresaService } from '../../services/empresa.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -26,8 +27,10 @@ export class HeaderComponent implements OnInit {
   menus: Menu[] = [];
   nivelUsuario: number = 0;
 
+  mostrarMenu: boolean = false;
+
   constructor(
-    private empresaService: EmpresaService, // Asumiendo que tienes un servicio para obtener la empresa
+    private empresaService: EmpresaService,
     private menuService: MenuService,
     private authService: AuthService,
     private router: Router,
@@ -36,13 +39,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.nivelUsuario = this.authService.getNivelAcceso(); // Obtén el nivel del usuario
+      this.nivelUsuario = this.authService.getNivelAcceso();
       console.log('NivelAcceso:', this.nivelUsuario);
       this.menuService.obtenerMenus().subscribe({
         next: (menus) => {
-          // Filtra solo activos y que nivel de acceso sea menor o igual al usuario actual
           this.menus = menus.filter(menu => menu.activo && menu.nivel_acceso! === this.nivelUsuario);
-
         },
         error: (err) => console.error('Error al obtener menús:', err)
       });
@@ -50,12 +51,25 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  logout() {
-    this.authService.logout();
-    window.location.reload();
-    this.router.navigate(['/login']).then(() => {
-      window.location.reload();
+  toggleMenu() {
+    this.mostrarMenu = !this.mostrarMenu;
+  }
+
+  async logout() {
+    const result = await Swal.fire({
+      title: '¿Estás seguro que quieres salir?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
     });
+
+    if (result.isConfirmed) {
+      this.authService.logout();
+      await this.router.navigate(['/login']);
+      window.location.reload();
+    }
   }
 
   cargarEmpresa() {
@@ -66,11 +80,5 @@ export class HeaderComponent implements OnInit {
       },
       error: (err) => console.error('Error al cargar la empresa:', err)
     });
-  }
-
-  mostrarMenu: boolean = false;
-
-  toggleMenu() {
-    this.mostrarMenu = !this.mostrarMenu;
   }
 }

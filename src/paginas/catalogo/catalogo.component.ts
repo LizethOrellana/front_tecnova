@@ -6,13 +6,14 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CarritoService } from '../../services/carrito.service';
 import { Carrito } from '../../models/Carrito';
 import { AuthService } from '../../services/auth-service';
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 
 @Component({
   selector: 'app-catalogo',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './catalogo.component.html',
-  styleUrl: './catalogo.component.css'
+  styleUrls: ['./catalogo.component.css'] // ← CORRECTO
 })
 export class CatalogoComponent implements OnInit {
   productos: Producto[] = [];
@@ -27,9 +28,13 @@ export class CatalogoComponent implements OnInit {
   userId: number | null = null;
   tieneCarritoActivo: boolean = false;
 
-
-  constructor(private authService: AuthService, private carritoService: CarritoService, private router: Router, private productoService: ProductoServiceService,
-    @Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(
+    private authService: AuthService,
+    private carritoService: CarritoService,
+    private router: Router,
+    private productoService: ProductoServiceService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -59,7 +64,6 @@ export class CatalogoComponent implements OnInit {
         }
       });
 
-      // Cargar carrito del localStorage
       const carritoGuardado = localStorage.getItem('carrito');
       if (carritoGuardado) {
         this.carrito = JSON.parse(carritoGuardado);
@@ -67,21 +71,22 @@ export class CatalogoComponent implements OnInit {
     }
   }
 
-
-
   mostrarCarrito: boolean = false;
   total: number = 0;
 
   anadirAlCarrito(producto: Producto) {
-    const userId = this.userId;  // Usa la variable de clase
+    const userId = this.userId;
 
     if (!userId) {
-      alert('Debes iniciar sesión para añadir productos al carrito');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Debes iniciar sesión',
+        text: 'Para añadir productos al carrito debes iniciar sesión'
+      });
       return;
     }
     console.log("Usuario ID:", userId);
 
-    // Validar si carrito existe y está activo
     if (!this.carrito.id || this.carrito.estado_proceso !== 'creado') {
       this.carritoService.obtenerCarritoActivo(userId).subscribe({
         next: (carritoExistente) => {
@@ -111,10 +116,8 @@ export class CatalogoComponent implements OnInit {
 
   agregarProductoYGuardar(producto: any) {
     if (this.carrito?.id) {
-      // solo incrementamos desde backend sin tocar el array local
       this.carritoService.incrementarProducto(this.carrito.id, producto.id).subscribe({
         next: () => {
-          // incrementa visualmente
           const local = this.carrito.productos.find(p => p.producto.id === producto.id);
           if (local) {
             local.cantidad++;
@@ -123,6 +126,17 @@ export class CatalogoComponent implements OnInit {
           }
           localStorage.setItem('carrito', JSON.stringify(this.carrito));
           this.actualizarTotal();
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Producto añadido',
+            text: `${producto.nombre} agregado al carrito.`,
+            toast: true,
+            position: 'top-end',
+            timer: 1500,
+            showConfirmButton: false,
+            timerProgressBar: true
+          });
         },
         error: err => console.error('Error al incrementar producto:', err)
       });
@@ -135,23 +149,28 @@ export class CatalogoComponent implements OnInit {
           localStorage.setItem('carrito', JSON.stringify(this.carrito));
           this.actualizarTotal();
           console.log('Carrito creado y producto añadido:', this.carrito);
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Carrito creado',
+            text: `${producto.nombre} agregado al carrito.`,
+            toast: true,
+            position: 'top-end',
+            timer: 1500,
+            showConfirmButton: false,
+            timerProgressBar: true
+          });
         }
       });
-
     }
   }
 
-
-
-
-  // Método para eliminar producto
   eliminarDelCarrito(productoId: number) {
     this.carrito.productos = this.carrito.productos.filter(
       item => item.producto.id !== productoId
     );
   }
 
-  // Método para aumentar cantidad local
   incrementarCantidad(productoId: number) {
     const item = this.carrito.productos.find(p => p.producto.id === productoId);
     if (item) {
@@ -159,7 +178,6 @@ export class CatalogoComponent implements OnInit {
     }
   }
 
-  // Método para disminuir cantidad local (sin bajar de 1)
   disminuirCantidad(productoId: number) {
     const item = this.carrito.productos.find(p => p.producto.id === productoId);
     if (item && item.cantidad > 1) {
@@ -167,7 +185,6 @@ export class CatalogoComponent implements OnInit {
     }
   }
 
-  // Método para actualizar el carrito (guardar en localStorage)
   actualizarCarrito() {
     this.actualizarTotal();
     localStorage.setItem('carrito', JSON.stringify(this.carrito));
@@ -175,39 +192,45 @@ export class CatalogoComponent implements OnInit {
     this.carritoService.actualizar(this.carrito.id!, this.carrito).subscribe({
       next: () => {
         console.log('Carrito actualizado en el backend');
+        Swal.fire({
+          icon: 'success',
+          title: 'Carrito actualizado',
+          toast: true,
+          position: 'top-end',
+          timer: 1500,
+          showConfirmButton: false,
+          timerProgressBar: true
+        });
       },
       error: err => {
         console.error('Error al actualizar carrito:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo actualizar el carrito'
+        });
       }
     });
-    alert('Carrito actualizado correctamente');
   }
-
-
-
 
   actualizarTotal() {
     if (!this.carrito?.productos) {
       this.total = 0;
       return;
     }
-
     this.total = this.carrito.productos.reduce((suma, item) => {
       return suma + (item.producto.precio * item.cantidad);
     }, 0);
   }
-
 
   crearPedido() {
     localStorage.setItem('carrito', JSON.stringify(this.carrito));
     this.router.navigate(['/checkout']);
   }
 
-
   verDetalle(producto: Producto): void {
     console.log('Vista previa:', producto);
   }
-
 
   editarProducto(producto: any): void {
     console.log('Editar producto:', producto);
@@ -216,12 +239,10 @@ export class CatalogoComponent implements OnInit {
 
   eliminarProducto(nombre: string): void {
     console.log('Eliminar producto con nombre:', nombre);
-    // Aquí podrías hacer una llamada al backend para eliminarlo
     this.productos = this.productos.filter(p => p.nombre !== nombre);
-
   }
+
   verHistorial() {
     this.router.navigate(['/historial']);
-
   }
 }
