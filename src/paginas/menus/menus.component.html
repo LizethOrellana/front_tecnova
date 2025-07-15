@@ -31,7 +31,7 @@
 
                         <!-- Nombre -->
                         <td>
-                            <ng-container *ngIf="menuEditado && menuEditado.id === menuEditado.id; else mostrarNombre">
+                            <ng-container *ngIf="menuEditado && menuEditado.id === menu.id; else mostrarNombre">
                                 <input [(ngModel)]="menuEditado.nombre" />
                             </ng-container>
                             <ng-template #mostrarNombre>
@@ -39,68 +39,60 @@
                             </ng-template>
                         </td>
 
-                        <!--Ruta -->
+                        <!-- Ruta -->
                         <td>
-                            <ng-container *ngIf="menuEditado && menuEditado.id; else mostrarRuta">
+                            <ng-container *ngIf="menuEditado && menuEditado.id === menu.id; else mostrarRuta">
                                 <input [(ngModel)]="menuEditado.ruta" />
                             </ng-container>
                             <ng-template #mostrarRuta>
-                                <span>{{ menu.ruta}}</span>
+                                <span>{{ menu.ruta }}</span>
                             </ng-template>
                         </td>
 
+                        <!-- Acceso -->
                         <td>
-                            <ng-container
-                                *ngIf="menuEditado && menuEditado.id === menuEditado.id; else mostrarNivelAcceso">
+                            <ng-container *ngIf="menuEditado && menuEditado.id === menu.id; else mostrarNivelAcceso">
                                 <label class="label">Acceso</label>
-                                <select id="nivel_acceso" name="nivel_acceso" [(ngModel)]="menuEditado.nivel_acceso"
-                                    required>
+                                <select [(ngModel)]="menuEditado.nivel_acceso" required>
                                     <option value="" disabled>Seleccione cual es el nivel de acceso</option>
-                                    <option [value]="0">
-                                        Publico
-                                    </option>
-                                    <option [value]="1">
-                                        Usuario
-                                    </option>
-                                    <option [value]="2">
-                                        Administrador
-                                    </option>
+                                    <option [value]="0">Público</option>
+                                    <option [value]="2">Usuario</option>
+                                    <option [value]="1">Administrador</option>
                                 </select>
                             </ng-container>
                             <ng-template #mostrarNivelAcceso>
-                                <span *ngIf="menu.nivel_acceso==0">Publico</span>
-                                <span *ngIf="menu.nivel_acceso==1">Usuario</span>
-                                <span *ngIf="menu.nivel_acceso==2">Administrador</span>
+                                <span *ngIf="menu.nivel_acceso == 0">Público</span>
+                                <span *ngIf="menu.nivel_acceso == 2">Usuario</span>
+                                <span *ngIf="menu.nivel_acceso == 1">Administrador</span>
                             </ng-template>
-
                         </td>
 
                         <!-- Estado -->
                         <td>
-                            <ng-container style="display: flex;"
-                                *ngIf="menuEditado && menuEditado.id; else mostrarEstado">
+                            <ng-container *ngIf="menuEditado && menuEditado.id === menu.id; else mostrarEstado"
+                                style="display: flex;">
                                 <label class="radio-button">
-                                    <input type="radio" [(ngModel)]="menuEditado.activo" name="activo" value="1">
+                                    <input type="radio" [(ngModel)]="menuEditado.activo" [value]="true"
+                                        name="estado_{{menu.id}}" />
                                     <span class="radio"></span>
                                     Activo
                                 </label>
-
                                 <label class="radio-button">
-                                    <input type="radio" [(ngModel)]="menuEditado.activo" name="activo" value="0">
+                                    <input type="radio" [(ngModel)]="menuEditado.activo" [value]="false"
+                                        name="estado_{{menu.id}}" />
                                     <span class="radio"></span>
                                     Inactivo
                                 </label>
                             </ng-container>
                             <ng-template #mostrarEstado>
-                                <span *ngIf="menuEditado?.activo">Activo</span>
-                                <span *ngIf="!menuEditado?.activo">Inactivo</span>
+                                <span *ngIf="menu.activo">Activo</span>
+                                <span *ngIf="!menu.activo">Inactivo</span>
                             </ng-template>
                         </td>
 
-
                         <!-- Acciones -->
                         <td>
-                            <ng-container *ngIf="menuEditado && menuEditado.id === menuEditado.id; else botonesEditar">
+                            <ng-container *ngIf="menuEditado && menuEditado.id === menu.id; else botonesEditar">
                                 <button (click)="guardarEdicion()">Guardar</button>
                                 <button (click)="cancelarEdicion()">Cancelar</button>
                             </ng-container>
